@@ -9,6 +9,9 @@ public class KakaoOauth {
     private String refreshToken;
     private int refreshValidTime;
 
+    public void updateRefreshToken(String newToken) {
+        this.refreshToken = newToken;
+    }
     @Builder
     public KakaoOauth(String accessToken, String refreshToken, int refreshValidTime) {
         this.accessToken = accessToken;

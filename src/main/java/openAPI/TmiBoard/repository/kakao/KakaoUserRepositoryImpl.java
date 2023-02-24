@@ -25,4 +25,16 @@ public class KakaoUserRepositoryImpl implements KakaoCustomRepository {
                 .where(condition)
                 .fetchOne();
     }
+
+    public KakaoUser findByUserName(String userName) {
+        QKakaoUser qKakaoUser = QKakaoUser.kakaoUser;
+
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and(qKakaoUser.userName.eq(userName));
+        return  queryFactory.selectFrom(qKakaoUser)
+                .where(condition)
+                .fetchOne();
+    }
+
+
 }

@@ -19,6 +19,7 @@ public class KakaoLoginController {
         //여기까지 OAuth을 통해 토큰, 유저정보 및 회원가입(DB저장) 진행
         KakaoUserDto user = kakaoUserService.login(code);
 
+
         //JWT + SpringSecurity
         /**
          * // 생성된 id pw 기반으로 Provider에게 Authentication 객체를 넘겨주며 인증 요청

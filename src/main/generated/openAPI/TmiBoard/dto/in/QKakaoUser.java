@@ -19,6 +19,8 @@ public class QKakaoUser extends EntityPathBase<KakaoUser> {
 
     public static final QKakaoUser kakaoUser = new QKakaoUser("kakaoUser");
 
+    public final StringPath refreshToken = createString("refreshToken");
+
     public final StringPath userEmail = createString("userEmail");
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);

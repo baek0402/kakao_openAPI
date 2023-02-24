@@ -1,7 +1,6 @@
 package openAPI.TmiBoard.service.kakao.oauth;
 
 import openAPI.TmiBoard.dto.in.KakaoUser;
-import openAPI.TmiBoard.service.kakao.KakaoService;
 import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import openAPI.TmiBoard.dto.in.KakaoOauth;
 
 @Service
-public class KakaoOauthService implements KakaoService {
+public class KakaoOauthService implements OauthService {
 
     public KakaoOauth getUserToken(String code) {
         // HttpHeader 오브젝트 생성
