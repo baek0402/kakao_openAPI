@@ -2,10 +2,12 @@ package openAPI.TmiBoard.dto.out;
 
 import lombok.Builder;
 import lombok.Getter;
+import openAPI.TmiBoard.contract.BirthStatus;
 import openAPI.TmiBoard.contract.UserStatus;
 
 @Getter
 public class KakaoUserDto {
+
     private Long userId;
     private String userEmail;
     private String userName;

@@ -8,6 +8,7 @@ import openAPI.TmiBoard.contract.UserStatus;
 
 import javax.persistence.*;
 
+
 @Getter
 @Entity
 @Table(name = "kakaousers")
@@ -40,7 +41,6 @@ public class KakaoUser {
     public void updateStatus(UserStatus status) {
         this.userStatus = status;
     }
-
 
     @Builder
     public KakaoUser(Long userId, String userEmail, String userName, UserStatus userStatus) {//}, String role) {

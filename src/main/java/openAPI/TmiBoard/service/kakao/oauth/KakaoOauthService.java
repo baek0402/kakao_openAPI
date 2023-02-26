@@ -1,7 +1,10 @@
 package openAPI.TmiBoard.service.kakao.oauth;
 
+import com.nimbusds.oauth2.sdk.auth.Secret;
 import openAPI.TmiBoard.dto.in.KakaoUser;
+import openAPI.TmiBoard.secret.SecretConfig;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +17,8 @@ import openAPI.TmiBoard.dto.in.KakaoOauth;
 
 @Service
 public class KakaoOauthService implements OauthService {
+    @Value("${kakao-open-api.auth.rest-api-key}")
+    String restApiKey;
 
     public KakaoOauth getUserToken(String code) {
         // HttpHeader 오브젝트 생성
@@ -23,7 +28,7 @@ public class KakaoOauthService implements OauthService {
         // HttpBody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "e847f2db5990750a00c763982402284f");
+        params.add("client_id", restApiKey);
         params.add("redirect_uri", "http://localhost:8080/users/login/kakao");
         params.add("code", code);
         params.add("scope", "account_email");

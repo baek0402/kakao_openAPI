@@ -48,6 +48,7 @@ dependencies {
 	//mapper
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 
 	//json
 	implementation("org.json:json:20220320")

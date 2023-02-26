@@ -5,7 +5,7 @@ spring:
         registration:
           kakao:
             client-id: e847f2db5990750a00c763982402284f
-            client-secret: XgT2dIwVuYc9ZyequvCNRsD5R6hlqyJSAmxh4b3t
+            client-secret:
             client-name: Kakao
             client-authentication-method: POST
             redirect-uri: http://localhost:8080//users/login/kakao #oauth/kakao
@@ -34,6 +34,10 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+kakao-open-api:
+  auth:
+    rest-api-key: e847f2db5990750a00c763982402284f
 
 logging:
   level:
