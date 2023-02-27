@@ -23,4 +23,13 @@ public class TmiCardRepositoryImpl implements TmiCardCustomRepository {
 
         return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetch();
     }
+
+    @Override
+    public TmiCard findByCardId(Long cardId) {
+        QTmiCard qTmiCard = QTmiCard.tmiCard;
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and(qTmiCard.cardId.eq(cardId));
+
+        return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetchOne();
+    }
 }

@@ -8,4 +8,6 @@ public interface TmiCardCustomRepository {
 
     List<TmiCard> findByUserId(Long userId);
 
+    TmiCard findByCardId(Long cardId);
+
 }

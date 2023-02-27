@@ -9,7 +9,6 @@ import openAPI.TmiBoard.repository.tmiCard.TmiCardRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,13 +17,12 @@ import java.util.stream.Collectors;
 public class TmiCardService {
 
     private final TmiCardRepository tmiCardRepository;
-
     private final TmiCardDtoConvert tmiCardDtoConvert;
 
     @Transactional
     public TmiCardDto createTmicard(TmiCardRequestBody requestBody, Long userId) {
         TmiCard tmicard = TmiCard.builder()
-                .userId(userId)
+                .kakaoUser_id(userId)
                 .cardEmoji(requestBody.getCardEmoji())
                 .cardColor(requestBody.getCardColor())
                 .title(requestBody.getTitle())
@@ -44,6 +42,13 @@ public class TmiCardService {
                 .map(TmiCard::getMainData)
                 .collect(Collectors.toList());
 
-        return new ArrayList<>();//tmiCardDtoConvert.convert(result);
+        return tmiCardDtoConvert.convert(result);
+    }
+
+    public TmiCardDto getCardDetail(Long cardId) {
+        // Long cardId = 1L;
+        TmiCard result = tmiCardRepository.findByCardId(cardId);
+
+        return tmiCardDtoConvert.convert(result);
     }
 }

@@ -13,10 +13,11 @@ public class TmiCardDto {
     private String title;
     private String comments;
     private String hashTag;
+    private Long kakaoUser_id;
 
     @Builder
-    public TmiCardDto(Long card_id, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
-        this.card_id = card_id;
+    public TmiCardDto(Long kakaoUser_id, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
+        this.kakaoUser_id = kakaoUser_id;
         this.cardEmoji = cardEmoji;
         this.cardColor = cardColor;
         this.title = title;

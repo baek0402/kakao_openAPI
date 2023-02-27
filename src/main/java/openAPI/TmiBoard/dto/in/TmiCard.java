@@ -15,13 +15,14 @@ public class TmiCard {
     private Long cardId;
     @Column(name = "card_emoji")
     private String cardEmoji;
-    @Column(name = "card_title")
-    private String title;
-    @Column(name = "hash_tag")
-    private String hashTag;
-    private String comments;
     @Column(name = "card_color")
     private String cardColor;
+    @Column(name = "card_title")
+    private String title;
+    private String comments;
+    @Column(name = "hash_tag")
+    private String hashTag;
+
 
     /*@ManyToOne
     @JoinColumn(name = "user_id")
@@ -38,14 +39,16 @@ public class TmiCard {
 
         return card;
     }
-    public TmiCard() { }
+
+    public TmiCard() {}
+
     @Builder
-    public TmiCard(Long userId, String cardEmoji, String title, String hashTag, String comments, String cardColor) {
-        this.kakaoUser_id = userId;
+    public TmiCard(Long kakaoUser_id, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
+        this.kakaoUser_id = kakaoUser_id;
         this.cardEmoji = cardEmoji;
-        this.title = title;
-        this.hashTag = hashTag;
-        this.comments = comments;
         this.cardColor = cardColor;
+        this.title = title;
+        this.comments = comments;
+        this.hashTag = hashTag;
     }
 }

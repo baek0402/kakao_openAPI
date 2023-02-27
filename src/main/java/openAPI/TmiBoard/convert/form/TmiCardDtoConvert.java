@@ -9,6 +9,7 @@ import java.util.List;
 
 @Mapper(config = MapStructConfig.class)
 public interface TmiCardDtoConvert {
+
     TmiCardDto convert(TmiCard source);
 
     List<TmiCardDto> convert(List<TmiCard> sources);

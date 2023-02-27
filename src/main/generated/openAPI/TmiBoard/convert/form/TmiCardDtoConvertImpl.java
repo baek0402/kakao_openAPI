@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-02-26T21:42:43+0900",
+    date = "2023-02-27T15:21:31+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 @Component
@@ -23,6 +23,13 @@ public class TmiCardDtoConvertImpl implements TmiCardDtoConvert {
         }
 
         TmiCardDto.TmiCardDtoBuilder tmiCardDto = TmiCardDto.builder();
+
+        tmiCardDto.kakaoUser_id( source.getKakaoUser_id() );
+        tmiCardDto.cardEmoji( source.getCardEmoji() );
+        tmiCardDto.cardColor( source.getCardColor() );
+        tmiCardDto.title( source.getTitle() );
+        tmiCardDto.comments( source.getComments() );
+        tmiCardDto.hashTag( source.getHashTag() );
 
         return tmiCardDto.build();
     }
