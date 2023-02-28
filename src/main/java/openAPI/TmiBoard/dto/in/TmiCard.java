@@ -23,12 +23,10 @@ public class TmiCard {
     @Column(name = "hash_tag")
     private String hashTag;
 
-
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private KakaoUser kakaoUser;*/
-    @Column(name = "user_id")
-    private Long kakaoUser_id;
+    private KakaoUser kakaoUser;
+
 
     public TmiCard getMainData() {
         TmiCard card = TmiCard.builder()
@@ -43,8 +41,8 @@ public class TmiCard {
     public TmiCard() {}
 
     @Builder
-    public TmiCard(Long kakaoUser_id, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
-        this.kakaoUser_id = kakaoUser_id;
+    public TmiCard(KakaoUser kakaoUser, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
+        this.kakaoUser = kakaoUser;
         this.cardEmoji = cardEmoji;
         this.cardColor = cardColor;
         this.title = title;

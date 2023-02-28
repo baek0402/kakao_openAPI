@@ -24,7 +24,7 @@ public class MyboardController {
         return myboard;
     }
     @PostMapping("/create/myboard")
-    public ResponseEntity CreaetMyboard(@RequestBody MyboardRequestBody myboardRequestBody) {
+    public ResponseEntity creaetMyboard(@RequestBody MyboardRequestBody myboardRequestBody) {
         //jwt 유효성 검증을하고
         //(jwt포함되어있는)유저아이디를 가지고오고
         //myboard랑 이 유저아이디랑 같이 저장하면?

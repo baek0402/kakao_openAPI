@@ -38,6 +38,10 @@ public class Myboard {
     @Column(name = "myboard_url3")
     private String url3;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private KakaoUser kakaoUser;
+
     @Builder
     public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3) {
         this.myboardId = myboardId;

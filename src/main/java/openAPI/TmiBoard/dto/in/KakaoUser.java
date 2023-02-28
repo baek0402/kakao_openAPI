@@ -30,9 +30,9 @@ public class KakaoUser {
     @Column(name = "refresh_token")
     private String refreshToken;
 
-    /*@OneToOne(mappedBy = "kakaoUser")
-    private MyBoard myBoard;
-    */
+    @OneToOne(mappedBy = "kakaoUser")
+    private Myboard myBoard;
+
 
     public void updateRefreshToken(String newToken) {
         this.refreshToken = newToken;

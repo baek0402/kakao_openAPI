@@ -21,17 +21,17 @@ public class TmiCardController {
 
     //create
     @PostMapping("/create/tmicard")
-    public ResponseEntity CreateTmicard(@RequestBody TmiCardRequestBody requestBody) {
+    public ResponseEntity createTmicard(@RequestBody TmiCardRequestBody requestBody) {
         //jwt랑 같이 넘겨..
         //KakaoUser name = kakaoCustomRepository.findByUserName("백연정");
-        TmiCardDto card = tmicardService.createTmicard(requestBody, 1L);
+        TmiCardDto card = tmicardService.createTmicard(requestBody);
 
         return ResponseEntity.ok(card);
     }
 
     //list all
     @GetMapping("/tmiCardList")
-    public List<TmiCardDto> CardList() {
+    public List<TmiCardDto> cardList() {
         //jwt를 통한 유저 id
         List<TmiCardDto> searchAll = tmicardService.getCardList(1L);
 
@@ -43,7 +43,7 @@ public class TmiCardController {
 
     //view detail
     @GetMapping("/view/tmicard/{cardId}")
-    public TmiCardDto CardDetail(@PathVariable Long cardId) {
+    public TmiCardDto cardDetail(@PathVariable Long cardId) {
         //jwt를 통한 userId와 해당 user의 해당 tmicard number을 조회
 
         TmiCardDto search = tmicardService.getCardDetail(cardId);

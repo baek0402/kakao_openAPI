@@ -20,9 +20,8 @@ public class TmiCardService {
     private final TmiCardDtoConvert tmiCardDtoConvert;
 
     @Transactional
-    public TmiCardDto createTmicard(TmiCardRequestBody requestBody, Long userId) {
+    public TmiCardDto createTmicard(TmiCardRequestBody requestBody) { //}, Long userId) {
         TmiCard tmicard = TmiCard.builder()
-                .kakaoUser_id(userId)
                 .cardEmoji(requestBody.getCardEmoji())
                 .cardColor(requestBody.getCardColor())
                 .title(requestBody.getTitle())

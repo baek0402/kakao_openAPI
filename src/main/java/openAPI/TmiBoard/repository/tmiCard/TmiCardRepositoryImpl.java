@@ -19,7 +19,7 @@ public class TmiCardRepositoryImpl implements TmiCardCustomRepository {
     public List<TmiCard> findByUserId(Long userId) {
         QTmiCard qTmiCard = QTmiCard.tmiCard;
         BooleanBuilder condition = new BooleanBuilder();
-        condition.and(qTmiCard.kakaoUser_id.eq(userId));
+        //condition.and(qTmiCard.kakaoUser_id.eq(userId));
 
         return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetch();
     }
