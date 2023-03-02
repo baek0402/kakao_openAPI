@@ -52,7 +52,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
         // Refresh Token DB에 저장
         KakaoUser account = kakaoUserRepository.findByUserName(user.getUsername());
-        account.updateRefreshToken(refreshToken);
+        //account.updateRefreshToken(refreshToken);
 
         // Access Token , Refresh Token 프론트 단에 Response Header로 전달
         response.setContentType(APPLICATION_JSON_VALUE);

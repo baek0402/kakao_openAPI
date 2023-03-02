@@ -24,12 +24,16 @@ class CountTest {
         TmiCardLike like2 = new TmiCardLike();
         like2.setLikeStatus(Interact.GREAT);
 
+        TmiCardLike like = new TmiCardLike();
+        like.setLikeStatus(Interact.HEART);
+
         tmiCardLikeRepository.save(like1);
         tmiCardLikeRepository.save(like2);
+        tmiCardLikeRepository.save(like);
 
         TmiCardInteract count = tmiCardLikeRepository.countInteract();
 
-        System.out.println(count.getCount_great());
+        System.out.println(count.getCount_great() + " , " + count.getCount_clap() + " , " + count.getCount_heart());
     }
 
 }

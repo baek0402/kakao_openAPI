@@ -27,16 +27,8 @@ public class KakaoUser {
     @Column(name = "user_status")
     private UserStatus userStatus;
 
-    @Column(name = "refresh_token")
-    private String refreshToken;
-
     @OneToOne(mappedBy = "kakaoUser")
     private Myboard myBoard;
-
-
-    public void updateRefreshToken(String newToken) {
-        this.refreshToken = newToken;
-    }
 
     public void updateStatus(UserStatus status) {
         this.userStatus = status;
