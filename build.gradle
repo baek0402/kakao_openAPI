@@ -22,7 +22,7 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -40,10 +40,8 @@ dependencies {
 
 	//http
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-//	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-//	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-//	implementation 'com.auth0:java-jwt:4.0.0'
 
+	//stringutil?
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
 	//mapper
@@ -55,15 +53,12 @@ dependencies {
 	implementation("org.json:json:20220320")
 	implementation("com.googlecode.json-simple:json-simple:1.1.1")
 
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-
 	annotationProcessor 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	implementation 'com.auth0:java-jwt:3.19.2'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 tasks.named('test') {

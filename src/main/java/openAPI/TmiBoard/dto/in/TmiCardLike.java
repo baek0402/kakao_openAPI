@@ -19,7 +19,7 @@ public class TmiCardLike {
     @Column(name = "like_status")
     private Interact likeStatus;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "kakao_id")
     private KakaoUser kakaoUser;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tmicard_id")

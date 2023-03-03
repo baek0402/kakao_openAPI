@@ -1,12 +1,13 @@
 package openAPI.TmiBoard.dto.in;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Data
 @Table(name = "tmicard")
 public class TmiCard {
 
@@ -23,8 +24,8 @@ public class TmiCard {
     @Column(name = "hash_tag")
     private String hashTag;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "kakao_id")
     private KakaoUser kakaoUser;
 
 
@@ -41,8 +42,9 @@ public class TmiCard {
     public TmiCard() {}
 
     @Builder
-    public TmiCard(KakaoUser kakaoUser, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
+    public TmiCard(KakaoUser kakaoUser, Long cardId, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
         this.kakaoUser = kakaoUser;
+        this.cardId = cardId;
         this.cardEmoji = cardEmoji;
         this.cardColor = cardColor;
         this.title = title;

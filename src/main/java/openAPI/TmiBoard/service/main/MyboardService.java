@@ -2,10 +2,12 @@ package openAPI.TmiBoard.service.main;
 
 import lombok.RequiredArgsConstructor;
 import openAPI.TmiBoard.convert.form.MyboardDtoConvert;
+import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.out.MyboardDto;
 import openAPI.TmiBoard.dto.out.MyboardRequestBody;
-import openAPI.TmiBoard.repository.myboard.MyboaradRepository;
+import openAPI.TmiBoard.repository.kakao.KakaoCustomRepository;
+import openAPI.TmiBoard.repository.myboard.MyboardRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +17,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MyboardService {
 
-    private final MyboaradRepository myboaradRepository;
+    private final MyboardRepositoryImpl myboaradRepository;
     private final MyboardDtoConvert myboardDtoConvert;
+    private final KakaoCustomRepository kakaoUserRepository;
 
     @Transactional
-    public MyboardDto createMyboard(MyboardRequestBody requestBody) {
-        //jwt 사용자 인증 후 없으면 저장하기
+    public MyboardDto createMyboard(MyboardRequestBody requestBody, KakaoUser kakaoUser) {
+        //해당 카카오 유저의 정보와 Myboard 새 객체와 함께 저장하기
+
         Myboard board = Myboard.builder()
                 .name(requestBody.getName())
                 .emoji(requestBody.getEmoji())
@@ -32,6 +36,7 @@ public class MyboardService {
                 .url2(requestBody.getUrl2())
                 .url3(requestBody.getUrl3())
                 .build();
+        board.setKakaoUser(kakaoUser);
 
         myboaradRepository.save(board);
 
@@ -39,10 +44,12 @@ public class MyboardService {
     }
 
     public MyboardDto getMyboard(Long userId) {
-        Optional<Myboard> result = myboaradRepository.findById(userId);
+        Optional<KakaoUser> user = kakaoUserRepository.findById(userId);
+
+        Myboard result = myboaradRepository.findByKakaoId(userId);
         //이게 맞나?
 
-        return myboardDtoConvert.convert(result.get());
+        return myboardDtoConvert.convert(result);
         //modelMapper.map(result.get(), MyboardDto.class);
     }
 }

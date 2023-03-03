@@ -8,6 +8,9 @@ import java.beans.ConstructorProperties;
 @Getter
 public class MyboardRequestBody {
 
+    // jwt user (kakao user id)
+    private Long userId;
+
     //setting
     private String emoji;
     private BirthStatus birthStatus;

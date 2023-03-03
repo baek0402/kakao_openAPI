@@ -1,6 +1,7 @@
 package openAPI.TmiBoard.dto.in;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import openAPI.TmiBoard.contract.BirthStatus;
@@ -8,7 +9,7 @@ import openAPI.TmiBoard.contract.BirthStatus;
 import javax.persistence.*;
 
 @Entity
-@Getter
+@Data
 @Table(name = "myboard")
 @NoArgsConstructor
 public class Myboard {
@@ -39,12 +40,11 @@ public class Myboard {
     private String url3;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "kakao_id")
     private KakaoUser kakaoUser;
 
     @Builder
-    public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3) {
-        this.myboardId = myboardId;
+    public Myboard(String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3) {
         this.emoji = emoji;
         this.name = name;
         this.birth = birth;

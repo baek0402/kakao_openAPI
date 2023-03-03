@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class TmiCardRequestBody {
 
+    private Long userId;
     private String cardEmoji;
     private String cardColor;
 

@@ -7,17 +7,17 @@ import lombok.Getter;
 @Getter
 public class TmiCardDto {
 
-    private Long card_id;
+    private Long cardId;
+
     private String cardEmoji;
     private String cardColor;
     private String title;
     private String comments;
     private String hashTag;
-    private Long kakaoUser_id;
 
     @Builder
-    public TmiCardDto(Long kakaoUser_id, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
-        this.kakaoUser_id = kakaoUser_id;
+    public TmiCardDto(Long cardId, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
+        this.cardId = cardId;
         this.cardEmoji = cardEmoji;
         this.cardColor = cardColor;
         this.title = title;

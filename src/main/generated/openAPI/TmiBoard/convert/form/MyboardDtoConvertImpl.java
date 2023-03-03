@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-03-02T14:21:29+0900",
+    date = "2023-03-03T16:41:17+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 @Component
@@ -20,8 +20,18 @@ public class MyboardDtoConvertImpl implements MyboardDtoConvert {
             return null;
         }
 
-        MyboardDto myboardDto = new MyboardDto();
+        MyboardDto.MyboardDtoBuilder myboardDto = MyboardDto.builder();
 
-        return myboardDto;
+        myboardDto.name( source.getName() );
+        myboardDto.mbti( source.getMbti() );
+        myboardDto.birth( source.getBirth() );
+        myboardDto.myboardComments( source.getMyboardComments() );
+        myboardDto.emoji( source.getEmoji() );
+        myboardDto.birthStatus( source.getBirthStatus() );
+        myboardDto.url1( source.getUrl1() );
+        myboardDto.url2( source.getUrl2() );
+        myboardDto.url3( source.getUrl3() );
+
+        return myboardDto.build();
     }
 }

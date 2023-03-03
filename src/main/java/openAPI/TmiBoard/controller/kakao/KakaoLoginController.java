@@ -19,7 +19,7 @@ public class KakaoLoginController {
     private final JwtService jwtService;
 
     @GetMapping("/users/login/kakao")
-    public Map<String, String> kakaoLogin(@RequestParam String code) {
+    public Map<String, String> KakaoLogin(@RequestParam String code) {
 
         //여기까지 OAuth을 통해 토큰, 유저정보 및 회원가입(DB저장) 진행
         KakaoUserDto user = kakaoUserService.login(code);

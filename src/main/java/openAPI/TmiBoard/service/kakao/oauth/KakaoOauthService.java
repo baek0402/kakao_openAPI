@@ -1,8 +1,6 @@
 package openAPI.TmiBoard.service.kakao.oauth;
 
-import com.nimbusds.oauth2.sdk.auth.Secret;
 import openAPI.TmiBoard.dto.in.KakaoUser;
-import openAPI.TmiBoard.secret.SecretConfig;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;

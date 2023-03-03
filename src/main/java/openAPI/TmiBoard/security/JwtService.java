@@ -34,7 +34,7 @@ public class JwtService {
                     .compact();
     }
 
-    public int getUserIdx() throws BaseException {
+    public Long getUserIdx() throws BaseException {
 
         //1. JWT 추출
         String accessToken = getJwt();
@@ -53,7 +53,7 @@ public class JwtService {
         }
 
         // 3. userIdx 추출
-        return claims.getBody().get("userIdx",Integer.class);
+        return claims.getBody().get("userIdx", Long.class);
     }
 
     public String getJwt(){

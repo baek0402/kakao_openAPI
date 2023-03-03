@@ -4,7 +4,7 @@ import openAPI.TmiBoard.contract.Interact;
 import openAPI.TmiBoard.dto.in.TmiCardInteract;
 import openAPI.TmiBoard.dto.in.TmiCardLike;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardLikeRepository;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;

@@ -2,6 +2,7 @@ package openAPI.TmiBoard.service.main;
 
 import lombok.RequiredArgsConstructor;
 import openAPI.TmiBoard.convert.form.TmiCardDtoConvert;
+import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.TmiCard;
 import openAPI.TmiBoard.dto.out.TmiCardDto;
 import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
@@ -20,8 +21,9 @@ public class TmiCardService {
     private final TmiCardDtoConvert tmiCardDtoConvert;
 
     @Transactional
-    public TmiCardDto createTmicard(TmiCardRequestBody requestBody) { //}, Long userId) {
+    public TmiCardDto createTmicard(TmiCardRequestBody requestBody, KakaoUser user) { //}, Long userId) {
         TmiCard tmicard = TmiCard.builder()
+                .kakaoUser(user)
                 .cardEmoji(requestBody.getCardEmoji())
                 .cardColor(requestBody.getCardColor())
                 .title(requestBody.getTitle())
@@ -30,6 +32,7 @@ public class TmiCardService {
                 .build();
 
         tmiCardRepository.save(tmicard);
+        tmicard.setCardId(tmicard.getCardId());
 
         return tmiCardDtoConvert.convert(tmicard);
     }

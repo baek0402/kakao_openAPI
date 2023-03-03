@@ -6,34 +6,38 @@ import openAPI.TmiBoard.dto.out.TmiCardDto;
 import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
 import openAPI.TmiBoard.repository.kakao.KakaoCustomRepository;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
+import openAPI.TmiBoard.repository.kakao.KakaoUserRepositoryImpl;
 import openAPI.TmiBoard.service.main.TmiCardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 public class TmiCardController {
 
     private final TmiCardService tmicardService;
+    private final KakaoUserRepository kakaoUserRepository;
 
     //create
     @PostMapping("/create/tmicard")
     public ResponseEntity createTmicard(@RequestBody TmiCardRequestBody requestBody) {
         //jwt랑 같이 넘겨..
-        //KakaoUser name = kakaoCustomRepository.findByUserName("백연정");
-        TmiCardDto card = tmicardService.createTmicard(requestBody);
+        KakaoUser user = kakaoUserRepository.findById(requestBody.getUserId());
+        TmiCardDto card = tmicardService.createTmicard(requestBody, user);
 
         return ResponseEntity.ok(card);
     }
 
     //list all
-    @GetMapping("/tmiCardList")
-    public List<TmiCardDto> cardList() {
+    @GetMapping("/tmiCardList/{userId}")
+    public List<TmiCardDto> cardList(@PathVariable Long userId) {
         //jwt를 통한 유저 id
-        List<TmiCardDto> searchAll = tmicardService.getCardList(1L);
+        KakaoUser user = kakaoUserRepository.findById(userId);
+        List<TmiCardDto> searchAll = tmicardService.getCardList(user.getUserId());
 
         if(searchAll.isEmpty())
             searchAll = new ArrayList<>();
