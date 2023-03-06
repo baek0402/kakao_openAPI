@@ -2,20 +2,19 @@ package openAPI.TmiBoard.controller.myBoard;
 
 import lombok.RequiredArgsConstructor;
 import openAPI.TmiBoard.dto.in.KakaoUser;
+import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.out.MyboardDto;
 import openAPI.TmiBoard.dto.out.MyboardRequestBody;
 import openAPI.TmiBoard.repository.kakao.KakaoCustomRepository;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepositoryImpl;
+import openAPI.TmiBoard.repository.myboard.MyboardRepository;
 import openAPI.TmiBoard.security.JwtService;
 import openAPI.TmiBoard.service.main.MyboardService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -27,14 +26,8 @@ public class MyboardController {
     private final MyboardService myboardService;
     private final JwtService jwtService;
     private final KakaoUserRepository kakaoUserRepository;
+    private final MyboardRepository myboardRepository;
 
-    @GetMapping("/myboard")
-    public MyboardDto myboardView() {
-        Long userId = 2653788098L;//jwt를 통한 userId
-        MyboardDto myboard = myboardService.getMyboard(userId);
-
-        return myboard;
-    }
     @PostMapping("/create/myboard")
     public ResponseEntity creaetMyboard(@RequestBody MyboardRequestBody myboardRequestBody) {//jwt 유효성 검증을하고
        /*
@@ -65,4 +58,22 @@ public class MyboardController {
 
         return ResponseEntity.ok(resultDto);
     }
+
+    @GetMapping("/myboard")
+    public MyboardDto myboardView() {
+        Long userId = 2653788098L;//jwt를 통한 userId
+        MyboardDto myboard = myboardService.getMyboard(userId);
+
+        return myboard;
+    }
+
+    @PutMapping("/myboard")
+    public MyboardDto myboardUpdate(@RequestBody MyboardRequestBody myboardRequestBody) {
+        //수정하려는 kakaoUser의 myboard를 가져와서 해당 내용을 새로운 정보로 바꾸기
+
+        MyboardDto myboard = myboardService.updateMyboard(myboardRequestBody);
+
+        return myboard;
+    }
+
 }

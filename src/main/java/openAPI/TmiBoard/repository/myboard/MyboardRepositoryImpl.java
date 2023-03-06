@@ -9,13 +9,31 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class MyboardRepositoryImpl{
+public class MyboardRepositoryImpl implements MyboardRepository{
 
     private final JPAQueryFactory queryFactory;
-    private final MyboardCustomRepository myboardRepository;
+    private final MyboardCustomRepository myboardCustomRepository;
 
     public void save(Myboard myboard) {
-        myboardRepository.save(myboard);
+        myboardCustomRepository.save(myboard);
+    }
+
+    public Myboard updateMyboard(Myboard myboard, Myboard newBoard) {
+        myboard = Myboard.builder()
+                .name(newBoard.getName())
+                .emoji(newBoard.getEmoji())
+                .birth(newBoard.getBirth())
+                .birthStatus(newBoard.getBirthStatus())
+                .mbti(newBoard.getMbti())
+                .myboardComments(newBoard.getMyboardComments())
+                .url1(newBoard.getUrl1())
+                .url2(newBoard.getUrl2())
+                .url3(newBoard.getUrl3())
+                .build();
+
+        myboardCustomRepository.save(myboard);
+
+        return myboard;
     }
 
     public Myboard findByKakaoId(Long userId) {

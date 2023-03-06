@@ -7,5 +7,7 @@ public interface MyboardRepository {
     void save(Myboard myboard);
     Myboard findByKakaoId(Long userId);
 
+    Myboard updateMyboard(Myboard myboard, Myboard newBoard);
+
 
 }

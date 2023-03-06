@@ -7,6 +7,8 @@ import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.out.MyboardDto;
 import openAPI.TmiBoard.dto.out.MyboardRequestBody;
 import openAPI.TmiBoard.repository.kakao.KakaoCustomRepository;
+import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
+import openAPI.TmiBoard.repository.myboard.MyboardRepository;
 import openAPI.TmiBoard.repository.myboard.MyboardRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,9 +19,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MyboardService {
 
-    private final MyboardRepositoryImpl myboaradRepository;
+    private final MyboardRepository myboaradRepository;
     private final MyboardDtoConvert myboardDtoConvert;
-    private final KakaoCustomRepository kakaoUserRepository;
+    private final KakaoUserRepository kakaoUserRepository;
 
     @Transactional
     public MyboardDto createMyboard(MyboardRequestBody requestBody, KakaoUser kakaoUser) {
@@ -44,12 +46,28 @@ public class MyboardService {
     }
 
     public MyboardDto getMyboard(Long userId) {
-        Optional<KakaoUser> user = kakaoUserRepository.findById(userId);
-
         Myboard result = myboaradRepository.findByKakaoId(userId);
         //이게 맞나?
 
         return myboardDtoConvert.convert(result);
         //modelMapper.map(result.get(), MyboardDto.class);
+    }
+
+    public MyboardDto updateMyboard(MyboardRequestBody requestBody) {
+        Myboard newResult = Myboard.builder()
+                .name(requestBody.getName())
+                .emoji(requestBody.getEmoji())
+                .birth(requestBody.getBirth())
+                .birthStatus(requestBody.getBirthStatus())
+                .mbti(requestBody.getMbti())
+                .myboardComments(requestBody.getMyboardComments())
+                .url1(requestBody.getUrl1())
+                .url2(requestBody.getUrl2())
+                .url3(requestBody.getUrl3())
+                .build();
+
+        Myboard result = myboaradRepository.findByKakaoId(requestBody.getUserId());
+
+        return myboardDtoConvert.convert(myboaradRepository.updateMyboard(result, newResult));
     }
 }

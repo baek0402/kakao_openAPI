@@ -7,7 +7,7 @@ import lombok.Getter;
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter
 @Table(name = "tmicard")
 public class TmiCard {
 
@@ -28,6 +28,12 @@ public class TmiCard {
     @JoinColumn(name = "kakao_id")
     private KakaoUser kakaoUser;
 
+    public void tmiCardSetUser(KakaoUser kakaoUser) {
+        this.kakaoUser = kakaoUser;
+    }
+    public void tmiCardSetCardId(Long cardId) {
+        this.cardId = cardId;
+    }
 
     public TmiCard getMainData() {
         TmiCard card = TmiCard.builder()
@@ -42,8 +48,7 @@ public class TmiCard {
     public TmiCard() {}
 
     @Builder
-    public TmiCard(KakaoUser kakaoUser, Long cardId, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
-        this.kakaoUser = kakaoUser;
+    public TmiCard(Long cardId, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
         this.cardId = cardId;
         this.cardEmoji = cardEmoji;
         this.cardColor = cardColor;

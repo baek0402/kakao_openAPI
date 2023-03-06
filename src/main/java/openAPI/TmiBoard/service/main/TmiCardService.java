@@ -1,20 +1,25 @@
 package openAPI.TmiBoard.service.main;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import openAPI.TmiBoard.convert.form.TmiCardDtoConvert;
 import openAPI.TmiBoard.dto.in.KakaoUser;
+import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.in.TmiCard;
 import openAPI.TmiBoard.dto.out.TmiCardDto;
 import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepository;
+import openAPI.TmiBoard.repository.tmiCard.TmiCardRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TmiCardService {
 
     private final TmiCardRepository tmiCardRepository;
@@ -23,16 +28,16 @@ public class TmiCardService {
     @Transactional
     public TmiCardDto createTmicard(TmiCardRequestBody requestBody, KakaoUser user) { //}, Long userId) {
         TmiCard tmicard = TmiCard.builder()
-                .kakaoUser(user)
                 .cardEmoji(requestBody.getCardEmoji())
                 .cardColor(requestBody.getCardColor())
                 .title(requestBody.getTitle())
                 .hashTag(requestBody.getHashTag())
                 .comments(requestBody.getComments())
                 .build();
+        tmicard.tmiCardSetUser(user);
 
         tmiCardRepository.save(tmicard);
-        tmicard.setCardId(tmicard.getCardId());
+        tmicard.tmiCardSetCardId(tmicard.getCardId());
 
         return tmiCardDtoConvert.convert(tmicard);
     }
@@ -52,5 +57,34 @@ public class TmiCardService {
         TmiCard result = tmiCardRepository.findByCardId(cardId);
 
         return tmiCardDtoConvert.convert(result);
+    }
+
+    public TmiCardDto cardUpdate(TmiCard card, TmiCardRequestBody requestBody) {
+        Long cardId = card.getCardId();
+        KakaoUser user = card.getKakaoUser();
+        card = TmiCard.builder()
+                .cardId(cardId)
+                .title(requestBody.getTitle())
+                .cardEmoji(requestBody.getCardEmoji())
+                .cardColor(requestBody.getCardColor())
+                .hashTag(requestBody.getHashTag())
+                .comments(requestBody.getComments())
+                .build();
+        card.tmiCardSetUser(user);
+
+        TmiCard result = tmiCardRepository.save(card);
+        return tmiCardDtoConvert.convert(result);
+
+    }
+
+    @Transactional
+    public void cardDelete(Long cardId, Long userId) {
+        TmiCard result = tmiCardRepository.findCardByKakaoId(userId, cardId);
+
+        try {
+            tmiCardRepository.delete(result);
+        } catch (IllegalAccessError e) {
+            log.info("delete fail", e);
+        }
     }
 }

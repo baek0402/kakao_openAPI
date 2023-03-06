@@ -19,7 +19,7 @@ public class TmiCardRepositoryImpl implements TmiCardCustomRepository {
     public List<TmiCard> findByUserId(Long userId) {
         QTmiCard qTmiCard = QTmiCard.tmiCard;
         BooleanBuilder condition = new BooleanBuilder();
-        //condition.and(qTmiCard.kakaoUser_id.eq(userId));
+        condition.and(qTmiCard.kakaoUser.userId.eq(userId));
 
         return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetch();
     }
@@ -32,4 +32,23 @@ public class TmiCardRepositoryImpl implements TmiCardCustomRepository {
 
         return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetchOne();
     }
+
+    @Override
+    public TmiCard findByKakaoId(Long userId) {
+        QTmiCard qTmiCard = QTmiCard.tmiCard;
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and(qTmiCard.kakaoUser.userId.eq(userId));
+
+        return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetchOne();
+    }
+
+    public TmiCard findCardByKakaoId(Long userId, Long cardId) {
+        QTmiCard qTmiCard = QTmiCard.tmiCard;
+        BooleanBuilder condition = new BooleanBuilder();
+        condition.and(qTmiCard.kakaoUser.userId.eq(userId));
+        condition.and(qTmiCard.cardId.eq(cardId));
+
+        return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetchOne();
+    }
+
 }
