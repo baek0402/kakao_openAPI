@@ -54,7 +54,9 @@ public class MyboardService {
     }
 
     public MyboardDto updateMyboard(MyboardRequestBody requestBody) {
+        Myboard result = myboaradRepository.findByKakaoId(requestBody.getUserId());
         Myboard newResult = Myboard.builder()
+                .myboardId(result.getMyboardId())
                 .name(requestBody.getName())
                 .emoji(requestBody.getEmoji())
                 .birth(requestBody.getBirth())
@@ -65,8 +67,6 @@ public class MyboardService {
                 .url2(requestBody.getUrl2())
                 .url3(requestBody.getUrl3())
                 .build();
-
-        Myboard result = myboaradRepository.findByKakaoId(requestBody.getUserId());
 
         return myboardDtoConvert.convert(myboaradRepository.updateMyboard(result, newResult));
     }

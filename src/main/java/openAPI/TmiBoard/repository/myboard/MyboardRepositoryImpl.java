@@ -20,6 +20,7 @@ public class MyboardRepositoryImpl implements MyboardRepository{
 
     public Myboard updateMyboard(Myboard myboard, Myboard newBoard) {
         myboard = Myboard.builder()
+                .myboardId(newBoard.getMyboardId())
                 .name(newBoard.getName())
                 .emoji(newBoard.getEmoji())
                 .birth(newBoard.getBirth())

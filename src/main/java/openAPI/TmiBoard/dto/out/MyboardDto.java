@@ -7,6 +7,7 @@ import openAPI.TmiBoard.contract.BirthStatus;
 @Getter
 public class MyboardDto {
 
+    private Long boardId;
     //1
     private String name;
     private String mbti;
@@ -21,7 +22,8 @@ public class MyboardDto {
     private String url3;
 
     @Builder
-    public MyboardDto(String name, String mbti, String birth, String myboardComments, String emoji, BirthStatus birthStatus, String url1, String url2, String url3) {
+    public MyboardDto(Long boardId, String name, String mbti, String birth, String myboardComments, String emoji, BirthStatus birthStatus, String url1, String url2, String url3) {
+        this.boardId = boardId;
         this.name = name;
         this.mbti = mbti;
         this.birth = birth;

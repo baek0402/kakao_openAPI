@@ -1,11 +1,12 @@
 package openAPI.TmiBoard.dto.out;
 
+import lombok.Data;
 import lombok.Getter;
 import openAPI.TmiBoard.contract.BirthStatus;
 
 import java.beans.ConstructorProperties;
 
-@Getter
+@Data
 public class MyboardRequestBody {
 
     // jwt user (kakao user id)

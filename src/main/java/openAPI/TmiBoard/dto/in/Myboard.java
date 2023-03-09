@@ -44,7 +44,8 @@ public class Myboard {
     private KakaoUser kakaoUser;
 
     @Builder
-    public Myboard(String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3) {
+    public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3) {
+        this.myboardId = myboardId;
         this.emoji = emoji;
         this.name = name;
         this.birth = birth;
