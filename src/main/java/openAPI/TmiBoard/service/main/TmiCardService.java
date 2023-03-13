@@ -2,6 +2,7 @@ package openAPI.TmiBoard.service.main;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import openAPI.TmiBoard.convert.form.TmiCardConvert;
 import openAPI.TmiBoard.convert.form.TmiCardDtoConvert;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.Myboard;
@@ -13,6 +14,7 @@ import openAPI.TmiBoard.repository.tmiCard.TmiCardRepositoryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +25,7 @@ import java.util.stream.Collectors;
 public class TmiCardService {
 
     private final TmiCardRepository tmiCardRepository;
-    private final TmiCardDtoConvert tmiCardDtoConvert;
+    private final TmiCardConvert tmiCardDtoConvert;
 
     @Transactional
     public TmiCardDto createTmicard(TmiCardRequestBody requestBody, KakaoUser user) { //}, Long userId) {
@@ -49,14 +51,22 @@ public class TmiCardService {
                 .map(TmiCard::getMainData)
                 .collect(Collectors.toList());
 
-        return tmiCardDtoConvert.convert(result);
+        return tmiCardDtoConvert.convertList(result);
     }
 
     public TmiCardDto getCardDetail(Long cardId) {
         // Long cardId = 1L;
-        TmiCard result = tmiCardRepository.findByCardId(cardId);
+        TmiCard tmicard = tmiCardRepository.findByCardId(cardId);
 
-        return tmiCardDtoConvert.convert(result);
+        return TmiCardDto.builder()
+                .cardId(tmicard.getCardId())
+                .cardEmoji(tmicard.getCardEmoji())
+                .cardColor(tmicard.getCardColor())
+                .title(tmicard.getTitle())
+                .hashTag(tmicard.getHashTag())
+                .comments(tmicard.getComments())
+                .build();
+        //tmiCardDtoConvert.convert(result);
     }
 
     public TmiCardDto cardUpdate(TmiCard card, TmiCardRequestBody requestBody) {
@@ -73,7 +83,15 @@ public class TmiCardService {
         card.tmiCardSetUser(user);
 
         TmiCard result = tmiCardRepository.save(card);
-        return tmiCardDtoConvert.convert(result);
+        return TmiCardDto.builder()
+                .cardId(card.getCardId())
+                .cardEmoji(card.getCardEmoji())
+                .cardColor(card.getCardColor())
+                .title(card.getTitle())
+                .hashTag(card.getHashTag())
+                .comments(card.getComments())
+                .build();
+        //tmiCardDtoConvert.convert(result);
 
     }
 

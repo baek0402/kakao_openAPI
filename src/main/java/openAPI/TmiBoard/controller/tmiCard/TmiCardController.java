@@ -68,13 +68,10 @@ public class TmiCardController {
     }
 
     @DeleteMapping("/delete/{cardId}")
-    public ResponseEntity cardDelete(@PathVariable Long cardId,
-                                 @RequestParam Long userId) {
-
+    public ResponseEntity cardDelete(@PathVariable Long cardId) {
+        Long userId = 1L;//
         tmicardService.cardDelete(cardId, userId);
 
         return ResponseEntity.ok("successfully delete");
     }
-
-    //view random hashTag
 }

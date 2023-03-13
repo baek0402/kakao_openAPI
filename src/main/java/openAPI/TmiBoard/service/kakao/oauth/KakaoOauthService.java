@@ -27,7 +27,7 @@ public class KakaoOauthService implements OauthService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", restApiKey);
-        params.add("redirect_uri", "http://localhost:8080/users/login/kakao");
+        params.add("redirect_uri", "http://52.79.155.55:8080/users/login/kakao");
         params.add("code", code);
         params.add("scope", "account_email");
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import openAPI.TmiBoard.service.kakao.KakaoUserService;
 
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +21,6 @@ public class KakaoLoginController {
 
     @GetMapping("/users/login/kakao")
     public Map<String, String> KakaoLogin(@RequestParam String code) {
-
         //여기까지 OAuth을 통해 토큰, 유저정보 및 회원가입(DB저장) 진행
         KakaoUserDto user = kakaoUserService.login(code);
 

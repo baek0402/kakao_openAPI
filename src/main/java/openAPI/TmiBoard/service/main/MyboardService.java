@@ -1,6 +1,7 @@
 package openAPI.TmiBoard.service.main;
 
 import lombok.RequiredArgsConstructor;
+import openAPI.TmiBoard.convert.form.MyboardConvert;
 import openAPI.TmiBoard.convert.form.MyboardDtoConvert;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.Myboard;
@@ -20,14 +21,14 @@ import java.util.Optional;
 public class MyboardService {
 
     private final MyboardRepository myboaradRepository;
-    private final MyboardDtoConvert myboardDtoConvert;
+    private final MyboardConvert myboardDtoConvert;
     private final KakaoUserRepository kakaoUserRepository;
 
     @Transactional
     public MyboardDto createMyboard(MyboardRequestBody requestBody, KakaoUser kakaoUser) {
         //해당 카카오 유저의 정보와 Myboard 새 객체와 함께 저장하기
-
-        Myboard board = Myboard.builder()
+        Myboard board = new Myboard();
+        board = Myboard.builder()
                 .name(requestBody.getName())
                 .emoji(requestBody.getEmoji())
                 .birth(requestBody.getBirth())

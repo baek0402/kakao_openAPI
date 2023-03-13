@@ -9,6 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(config = MapStructConfig.class)
 public interface MyboardDtoConvert {
 
-    //@Mapping(source = "kakaoUser", target = "userId")
+    //@Mapping(source = "myboardId", target = "boardId")
     MyboardDto convert(Myboard source);
 }

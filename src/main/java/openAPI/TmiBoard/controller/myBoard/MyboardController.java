@@ -28,6 +28,7 @@ public class MyboardController {
     private final KakaoUserRepository kakaoUserRepository;
     private final MyboardRepository myboardRepository;
 
+
     @PostMapping("/create/myboard")
     public ResponseEntity creaetMyboard(@RequestBody MyboardRequestBody myboardRequestBody) {//jwt 유효성 검증을하고
        /*
