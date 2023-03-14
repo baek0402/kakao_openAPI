@@ -36,6 +36,8 @@ public class QMyboard extends EntityPathBase<Myboard> {
 
     public final NumberPath<Long> myboardId = createNumber("myboardId", Long.class);
 
+    public final EnumPath<openAPI.TmiBoard.contract.MyboardStatus> myboardStatus = createEnum("myboardStatus", openAPI.TmiBoard.contract.MyboardStatus.class);
+
     public final StringPath name = createString("name");
 
     public final StringPath url1 = createString("url1");

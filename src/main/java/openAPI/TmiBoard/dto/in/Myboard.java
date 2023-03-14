@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import openAPI.TmiBoard.contract.BirthStatus;
+import openAPI.TmiBoard.contract.MyboardStatus;
+import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
 
 import javax.persistence.*;
 
@@ -39,12 +41,24 @@ public class Myboard {
     @Column(name = "myboard_url3")
     private String url3;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "myboard_status")
+    private MyboardStatus myboardStatus;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
     private KakaoUser kakaoUser;
+    public void setKakaoUser(KakaoUser kakaoUser) {
+        this.kakaoUser = kakaoUser;
+        kakaoUser.changeMyboard(this);
+    }
+
+    public void updateMyboardStatus(MyboardStatus status) {
+        this.myboardStatus = status;
+    }
 
     @Builder
-    public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3) {
+    public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3, MyboardStatus myboardStatus) {
         this.myboardId = myboardId;
         this.emoji = emoji;
         this.name = name;
@@ -55,5 +69,6 @@ public class Myboard {
         this.url1 = url1;
         this.url2 = url2;
         this.url3 = url3;
+        this.myboardStatus = myboardStatus;
     }
 }

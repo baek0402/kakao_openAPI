@@ -1,12 +1,15 @@
 package openAPI.TmiBoard.service.main;
 
 import lombok.RequiredArgsConstructor;
+import openAPI.TmiBoard.contract.MyboardStatus;
 import openAPI.TmiBoard.convert.form.MyboardConvert;
 import openAPI.TmiBoard.convert.form.MyboardDtoConvert;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.out.MyboardDto;
 import openAPI.TmiBoard.dto.out.MyboardRequestBody;
+import openAPI.TmiBoard.exception.BaseException;
+import openAPI.TmiBoard.exception.BaseResponseStatus;
 import openAPI.TmiBoard.repository.kakao.KakaoCustomRepository;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
 import openAPI.TmiBoard.repository.myboard.MyboardRepository;
@@ -16,17 +19,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static openAPI.TmiBoard.contract.MyboardStatus.*;
+import static openAPI.TmiBoard.exception.BaseResponseStatus.*;
+
 @Service
 @RequiredArgsConstructor
-public class MyboardService {
+public class MyboardService{
 
     private final MyboardRepository myboaradRepository;
     private final MyboardConvert myboardDtoConvert;
+    private final MyboardRepository myboardRepository;
     private final KakaoUserRepository kakaoUserRepository;
 
     @Transactional
-    public MyboardDto createMyboard(MyboardRequestBody requestBody, KakaoUser kakaoUser) {
-        //해당 카카오 유저의 정보와 Myboard 새 객체와 함께 저장하기
+    public MyboardDto createMyboard(MyboardRequestBody requestBody, Long userId) throws BaseException {
+        Myboard checkBoard = myboardRepository.findByKakaoId(userId);
+        if (checkBoard != null) {
+            throw new BaseException(ALREADY_EXIST_BOARD);
+        }
+
+        KakaoUser user = kakaoUserRepository.findById(userId);
+        //카카오 유저의 정보와 Myboard 새 객체와 함께 저장하기
         Myboard board = new Myboard();
         board = Myboard.builder()
                 .name(requestBody.getName())
@@ -38,24 +51,30 @@ public class MyboardService {
                 .url1(requestBody.getUrl1())
                 .url2(requestBody.getUrl2())
                 .url3(requestBody.getUrl3())
+                .myboardStatus(Y)
                 .build();
-        board.setKakaoUser(kakaoUser);
+        board.setKakaoUser(user);
 
         myboaradRepository.save(board);
 
         return myboardDtoConvert.convert(board);
     }
 
-    public MyboardDto getMyboard(Long userId) {
+    public MyboardDto getMyboard(Long userId) throws BaseException {
         Myboard result = myboaradRepository.findByKakaoId(userId);
+
+        if(result == null)
+            throw new BaseException(NO_EXIST_BOARD);
         //이게 맞나?
 
         return myboardDtoConvert.convert(result);
         //modelMapper.map(result.get(), MyboardDto.class);
     }
 
-    public MyboardDto updateMyboard(MyboardRequestBody requestBody) {
+    public MyboardDto updateMyboard(MyboardRequestBody requestBody) throws BaseException {
         Myboard result = myboaradRepository.findByKakaoId(requestBody.getUserId());
+        if(result == null) throw new BaseException(NO_EXIST_BOARD);
+
         Myboard newResult = Myboard.builder()
                 .myboardId(result.getMyboardId())
                 .name(requestBody.getName())

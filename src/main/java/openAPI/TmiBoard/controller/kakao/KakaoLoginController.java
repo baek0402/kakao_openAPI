@@ -1,16 +1,16 @@
 package openAPI.TmiBoard.controller.kakao;
 
+import com.fasterxml.jackson.core.JsonParser;
 import lombok.RequiredArgsConstructor;
+import openAPI.TmiBoard.contract.MyboardStatus;
+import openAPI.TmiBoard.dto.out.AccessTokenDto;
 import openAPI.TmiBoard.dto.out.KakaoUserDto;
+import openAPI.TmiBoard.dto.out.ResponseDto;
+import openAPI.TmiBoard.dto.out.ResultDto;
 import openAPI.TmiBoard.security.JwtService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import openAPI.TmiBoard.service.kakao.KakaoUserService;
-
-import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,10 +19,13 @@ public class KakaoLoginController {
     private final KakaoUserService kakaoUserService;
     private final JwtService jwtService;
 
-    @GetMapping("/users/login/kakao")
-    public Map<String, String> KakaoLogin(@RequestParam String code) {
-        //여기까지 OAuth을 통해 토큰, 유저정보 및 회원가입(DB저장) 진행
-        KakaoUserDto user = kakaoUserService.login(code);
+    //@GetMapping("/users/login/kakao")
+    @PostMapping("/users/kakao")
+    public ResponseDto<ResultDto> KakaoLogin(@RequestParam String token) {
+//        System.out.println("카카오로그인" +  accessTokenDto.getToken());
+//        //여기까지 OAuth을 통해 토큰, 유저정보 및 회원가입(DB저장) 진행
+//        String code = accessTokenDto.getToken();
+        KakaoUserDto user = kakaoUserService.login(token);
 
         //JWT (로그인)
         String jwt = jwtService.createJwt(user);
@@ -34,12 +37,11 @@ public class KakaoLoginController {
          * return authenticationManager.authenticate(authToken);
          */
 
-        Map<String, String> result = new HashMap<>();
-        result.put("jwt", jwt);
-        result.put("email", user.getUserEmail());
-        result.put("name", user.getUserName());
-        result.put("id", user.getUserId().toString());
+        ResultDto resultObject = new ResultDto(jwt, user.getUserId(), user.getUserName(), user.getMyboardStatus());
+        //ResponseDto<ResultDto> responseDTO =
+        //responseDTO.setResult(resultObject);
 
-        return result;
+        return new ResponseDto<>(resultObject);
+
     }
 }

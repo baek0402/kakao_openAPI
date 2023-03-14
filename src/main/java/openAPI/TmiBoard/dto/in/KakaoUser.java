@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import openAPI.TmiBoard.contract.MyboardStatus;
 import openAPI.TmiBoard.contract.UserStatus;
 
 import javax.persistence.*;
@@ -29,8 +30,19 @@ public class KakaoUser {
     @OneToOne(mappedBy = "kakaoUser")
     private Myboard myBoard;
 
+    public void changeMyboard(Myboard myboard) {
+        this.myBoard = myboard;
+    }
+
     public void updateStatus(UserStatus status) {
         this.userStatus = status;
+    }
+
+    public MyboardStatus getMyboardStatus() {
+        if(myBoard == null)
+            return MyboardStatus.N;
+        else
+            return myBoard.getMyboardStatus();
     }
 
     @Builder

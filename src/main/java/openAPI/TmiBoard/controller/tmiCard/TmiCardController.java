@@ -3,8 +3,10 @@ package openAPI.TmiBoard.controller.tmiCard;
 import lombok.RequiredArgsConstructor;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.TmiCard;
+import openAPI.TmiBoard.dto.out.ResponseDto;
 import openAPI.TmiBoard.dto.out.TmiCardDto;
 import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
+import openAPI.TmiBoard.exception.BaseException;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepository;
 import openAPI.TmiBoard.service.main.TmiCardService;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static openAPI.TmiBoard.exception.BaseResponseStatus.NO_EXIST_TMICARD;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,40 +29,51 @@ public class TmiCardController {
 
     //create
     @PostMapping("/create")
-    public ResponseEntity createTmicard(@RequestBody TmiCardRequestBody requestBody) {
+    public ResponseDto<TmiCardDto> createTmicard(@RequestBody TmiCardRequestBody requestBody) {
         //jwt랑 같이 넘겨..
-        KakaoUser user = kakaoUserRepository.findById(requestBody.getUserId());
-        TmiCardDto card = tmicardService.createTmicard(requestBody, user);
+        //try {
+            KakaoUser user = kakaoUserRepository.findById(requestBody.getUserId());
+            TmiCardDto card = tmicardService.createTmicard(requestBody, user);
 
-        return ResponseEntity.ok(card);
+            return new ResponseDto<>(card);
+        //} catch (BaseException e) {
+
+        //    return new ResponseDto<>()
+        //}
     }
 
     //list all
     @GetMapping("/list/{userId}")
-    public List<TmiCardDto> cardList(@PathVariable Long userId) {
-        //jwt를 통한 유저 id
-        //KakaoUser user = kakaoUserRepository.findById(userId);
-        List<TmiCardDto> searchAll = tmicardService.getCardList(userId);
+    public ResponseDto<List<TmiCardDto>> cardList(@PathVariable Long userId) {
+        try {
+            //jwt를 통한 유저 id
+            //KakaoUser user = kakaoUserRepository.findById(userId);
+            List<TmiCardDto> searchAll = tmicardService.getCardList(userId);
 
-        if(searchAll.isEmpty())
-            searchAll = new ArrayList<>();
-
-        return searchAll;
+            return new ResponseDto<>(searchAll);
+        } catch (BaseException e) {
+            return new ResponseDto<>(NO_EXIST_TMICARD);
+        }
     }
 
     //view detail
     @GetMapping("/view/{cardId}")
-    public TmiCardDto cardDetail(@PathVariable Long cardId) {
-        //jwt를 통한 userId와 해당 user의 해당 tmicard number을 조회
+    public ResponseDto<TmiCardDto> cardDetail(@PathVariable Long cardId) {
+        try {
+            //jwt를 통한 userId와 해당 user의 해당 tmicard number을 조회
 
-        TmiCardDto search = tmicardService.getCardDetail(cardId);
+            TmiCardDto search = tmicardService.getCardDetail(cardId);
 
-        return search;
+            return new ResponseDto<>(search);
+        } catch (BaseException e) {
+            return new ResponseDto<>(NO_EXIST_TMICARD);
+        }
     }
 
     @PutMapping("/update/{cardId}")
     public TmiCardDto cardUpdate(@PathVariable Long cardId,
                                 @RequestBody TmiCardRequestBody requestBody) {
+
         //해당 user의 해당 card id에 대한것을 변경해야지..
         TmiCard card = tmiCardRepository.findCardByKakaoId(requestBody.getUserId(), cardId);
 
@@ -68,10 +83,15 @@ public class TmiCardController {
     }
 
     @DeleteMapping("/delete/{cardId}")
-    public ResponseEntity cardDelete(@PathVariable Long cardId) {
-        Long userId = 1L;//
-        tmicardService.cardDelete(cardId, userId);
+    public ResponseDto<TmiCardDto> cardDelete(@PathVariable Long cardId) {
+        try {
+            Long userId = 1L;//
+            TmiCardDto result = tmicardService.cardDelete(cardId, userId);
 
-        return ResponseEntity.ok("successfully delete");
+            return new ResponseDto<>(result);
+        } catch (BaseException e) {
+
+            return new ResponseDto<>(NO_EXIST_TMICARD);
+        }
     }
 }

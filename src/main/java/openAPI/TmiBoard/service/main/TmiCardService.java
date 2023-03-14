@@ -9,6 +9,8 @@ import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.in.TmiCard;
 import openAPI.TmiBoard.dto.out.TmiCardDto;
 import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
+import openAPI.TmiBoard.exception.BaseException;
+import openAPI.TmiBoard.exception.BaseResponseStatus;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepository;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepositoryImpl;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static openAPI.TmiBoard.exception.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +48,10 @@ public class TmiCardService {
         return tmiCardDtoConvert.convert(tmicard);
     }
 
-    public List<TmiCardDto> getCardList(Long userId) {
+    public List<TmiCardDto> getCardList(Long userId) throws BaseException{
         List<TmiCard> search = tmiCardRepository.findByUserId(userId);
+        if(search.size() == 0)
+            throw new BaseException(NO_EXIST_TMICARD);
 
         List<TmiCard> result = search.stream()
                 .map(TmiCard::getMainData)
@@ -54,19 +60,13 @@ public class TmiCardService {
         return tmiCardDtoConvert.convertList(result);
     }
 
-    public TmiCardDto getCardDetail(Long cardId) {
+    public TmiCardDto getCardDetail(Long cardId) throws BaseException{
         // Long cardId = 1L;
         TmiCard tmicard = tmiCardRepository.findByCardId(cardId);
 
-        return TmiCardDto.builder()
-                .cardId(tmicard.getCardId())
-                .cardEmoji(tmicard.getCardEmoji())
-                .cardColor(tmicard.getCardColor())
-                .title(tmicard.getTitle())
-                .hashTag(tmicard.getHashTag())
-                .comments(tmicard.getComments())
-                .build();
-        //tmiCardDtoConvert.convert(result);
+        if(tmicard == null) throw new BaseException(NO_EXIST_TMICARD);
+
+        return tmiCardDtoConvert.convert(tmicard);
     }
 
     public TmiCardDto cardUpdate(TmiCard card, TmiCardRequestBody requestBody) {
@@ -83,26 +83,17 @@ public class TmiCardService {
         card.tmiCardSetUser(user);
 
         TmiCard result = tmiCardRepository.save(card);
-        return TmiCardDto.builder()
-                .cardId(card.getCardId())
-                .cardEmoji(card.getCardEmoji())
-                .cardColor(card.getCardColor())
-                .title(card.getTitle())
-                .hashTag(card.getHashTag())
-                .comments(card.getComments())
-                .build();
-        //tmiCardDtoConvert.convert(result);
+        return tmiCardDtoConvert.convert(result);
 
     }
 
     @Transactional
-    public void cardDelete(Long cardId, Long userId) {
+    public TmiCardDto cardDelete(Long cardId, Long userId) throws BaseException{
         TmiCard result = tmiCardRepository.findCardByKakaoId(userId, cardId);
 
-        try {
-            tmiCardRepository.delete(result);
-        } catch (IllegalAccessError e) {
-            log.info("delete fail", e);
-        }
+        if(result == null) throw new BaseException(NO_EXIST_TMICARD);
+        tmiCardRepository.delete(result);
+
+        return tmiCardDtoConvert.convert(result);
     }
 }

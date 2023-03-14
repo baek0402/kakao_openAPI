@@ -2,6 +2,7 @@ package openAPI.TmiBoard.service.kakao;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import openAPI.TmiBoard.contract.MyboardStatus;
 import openAPI.TmiBoard.contract.UserStatus;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.repository.kakao.KakaoCustomRepository;
@@ -24,8 +25,9 @@ public class KakaoCreateService {
 
         if(user == null) {
             kakaoUserRepository.save(userInfo);
-        }
 
-        return userInfo;
+            return userInfo;
+        }
+        else return user;
     }
 }

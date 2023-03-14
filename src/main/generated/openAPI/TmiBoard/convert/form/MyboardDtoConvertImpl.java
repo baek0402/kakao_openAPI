@@ -1,6 +1,7 @@
 package openAPI.TmiBoard.convert.form;
 
 import javax.annotation.processing.Generated;
+import openAPI.TmiBoard.contract.BirthStatus;
 import openAPI.TmiBoard.convert.SupportValidation;
 import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.out.MyboardDto;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-03-13T15:28:02+0900",
+    date = "2023-03-14T22:37:18+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 @Component
@@ -20,18 +21,19 @@ public class MyboardDtoConvertImpl implements MyboardDtoConvert {
             return null;
         }
 
-        MyboardDto.MyboardDtoBuilder myboardDto = MyboardDto.builder();
+        Long boardId = null;
+        String name = null;
+        String mbti = null;
+        String birth = null;
+        String myboardComments = null;
+        String emoji = null;
+        BirthStatus birthStatus = null;
+        String url1 = null;
+        String url2 = null;
+        String url3 = null;
 
-        myboardDto.name( source.getName() );
-        myboardDto.mbti( source.getMbti() );
-        myboardDto.birth( source.getBirth() );
-        myboardDto.myboardComments( source.getMyboardComments() );
-        myboardDto.emoji( source.getEmoji() );
-        myboardDto.birthStatus( source.getBirthStatus() );
-        myboardDto.url1( source.getUrl1() );
-        myboardDto.url2( source.getUrl2() );
-        myboardDto.url3( source.getUrl3() );
+        MyboardDto myboardDto = new MyboardDto( boardId, name, mbti, birth, myboardComments, emoji, birthStatus, url1, url2, url3 );
 
-        return myboardDto.build();
+        return myboardDto;
     }
 }
