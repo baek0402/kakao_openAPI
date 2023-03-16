@@ -17,14 +17,22 @@ public class HashTag {
     private Long tagId;
     @Column(name = "hashtag_data")
     private String hashTagData;
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
-    private KakaoUser kakaoUser;
+    private KakaoUser kakaoUser;*/
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "card_id")
+    private TmiCard tmiCard;
+
+    @Column(name = "kakao_id")
+    private Long userId;
 
     @Builder
-    public HashTag(Long tagId, String hashTagData, KakaoUser kakaoUser) {
+    public HashTag(Long tagId, String hashTagData, Long userId) {
         this.tagId = tagId;
         this.hashTagData = hashTagData;
-        this.kakaoUser = kakaoUser;
+        this.userId = userId;
     }
 }

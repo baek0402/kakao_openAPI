@@ -42,9 +42,15 @@ public class QMyboard extends EntityPathBase<Myboard> {
 
     public final StringPath url1 = createString("url1");
 
+    public final StringPath url1Type = createString("url1Type");
+
     public final StringPath url2 = createString("url2");
 
+    public final StringPath url2Type = createString("url2Type");
+
     public final StringPath url3 = createString("url3");
+
+    public final StringPath url3Type = createString("url3Type");
 
     public QMyboard(String variable) {
         this(Myboard.class, forVariable(variable), INITS);

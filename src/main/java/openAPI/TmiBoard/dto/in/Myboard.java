@@ -36,10 +36,16 @@ public class Myboard {
 
     @Column(name = "myboard_url1")
     private String url1;
+    @Column(name = "myboard_ur1_type")
+    private String url1Type;
     @Column(name = "myboard_url2")
     private String url2;
+    @Column(name = "myboard_ur2_type")
+    private String url2Type;
     @Column(name = "myboard_url3")
     private String url3;
+    @Column(name = "myboard_ur3_type")
+    private String url3Type;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "myboard_status")
@@ -58,7 +64,7 @@ public class Myboard {
     }
 
     @Builder
-    public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url2, String url3, MyboardStatus myboardStatus) {
+    public Myboard(Long myboardId, String emoji, String name, String birth, BirthStatus birthStatus, String mbti, String myboardComments, String url1, String url1Type, String url2, String url2Type, String url3, String url3Type, MyboardStatus myboardStatus) {
         this.myboardId = myboardId;
         this.emoji = emoji;
         this.name = name;
@@ -67,8 +73,11 @@ public class Myboard {
         this.mbti = mbti;
         this.myboardComments = myboardComments;
         this.url1 = url1;
+        this.url1Type = url1Type;
         this.url2 = url2;
+        this.url2Type = url2Type;
         this.url3 = url3;
+        this.url3Type = url3Type;
         this.myboardStatus = myboardStatus;
     }
 }

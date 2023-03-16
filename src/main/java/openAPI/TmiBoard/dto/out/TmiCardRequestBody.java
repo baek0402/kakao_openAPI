@@ -2,6 +2,8 @@ package openAPI.TmiBoard.dto.out;
 
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 public class TmiCardRequestBody {
 
@@ -11,5 +13,5 @@ public class TmiCardRequestBody {
 
     private String title;
     private String comments;
-    private String hashTag;
+    private List<String> hashTagList;
 }

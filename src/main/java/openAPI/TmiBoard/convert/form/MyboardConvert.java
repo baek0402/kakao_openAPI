@@ -17,8 +17,12 @@ public class MyboardConvert {
                 .mbti(source.getMbti())
                 .myboardComments(source.getMyboardComments())
                 .url1(source.getUrl1())
+                .url1Type(source.getUrl1Type())
                 .url2(source.getUrl2())
+                .url2Type(source.getUrl2Type())
                 .url3(source.getUrl3())
+                .url3Type(source.getUrl3Type())
+                .myboardStatus(source.getMyboardStatus())
                 .build();
     }
 }

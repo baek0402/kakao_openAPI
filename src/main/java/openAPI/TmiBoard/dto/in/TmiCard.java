@@ -21,8 +21,6 @@ public class TmiCard {
     @Column(name = "card_title")
     private String title;
     private String comments;
-    @Column(name = "hash_tag")
-    private String hashTag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "kakao_id")
@@ -40,6 +38,7 @@ public class TmiCard {
                 .cardColor(getCardColor())
                 .cardEmoji(getCardEmoji())
                 .title(getTitle())
+                .comments(getComments())
                 .build();
 
         return card;
@@ -48,12 +47,11 @@ public class TmiCard {
     public TmiCard() {}
 
     @Builder
-    public TmiCard(Long cardId, String cardEmoji, String cardColor, String title, String comments, String hashTag) {
+    public TmiCard(Long cardId, String cardEmoji, String cardColor, String title, String comments) {
         this.cardId = cardId;
         this.cardEmoji = cardEmoji;
         this.cardColor = cardColor;
         this.title = title;
         this.comments = comments;
-        this.hashTag = hashTag;
     }
 }

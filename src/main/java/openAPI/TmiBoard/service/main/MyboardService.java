@@ -40,8 +40,7 @@ public class MyboardService{
 
         KakaoUser user = kakaoUserRepository.findById(userId);
         //카카오 유저의 정보와 Myboard 새 객체와 함께 저장하기
-        Myboard board = new Myboard();
-        board = Myboard.builder()
+        Myboard board = Myboard.builder()
                 .name(requestBody.getName())
                 .emoji(requestBody.getEmoji())
                 .birth(requestBody.getBirth())
@@ -49,8 +48,11 @@ public class MyboardService{
                 .mbti(requestBody.getMbti())
                 .myboardComments(requestBody.getMyboardComments())
                 .url1(requestBody.getUrl1())
+                .url1Type(requestBody.getUrl1Type())
                 .url2(requestBody.getUrl2())
+                .url2Type(requestBody.getUrl2Type())
                 .url3(requestBody.getUrl3())
+                .url3Type(requestBody.getUrl3Type())
                 .myboardStatus(Y)
                 .build();
         board.setKakaoUser(user);
@@ -71,23 +73,14 @@ public class MyboardService{
         //modelMapper.map(result.get(), MyboardDto.class);
     }
 
-    public MyboardDto updateMyboard(MyboardRequestBody requestBody) throws BaseException {
-        Myboard result = myboaradRepository.findByKakaoId(requestBody.getUserId());
+    public MyboardDto updateMyboard(Myboard newMyboard, Long userId) throws BaseException {
+        Myboard result = myboaradRepository.findByKakaoId(userId);
         if(result == null) throw new BaseException(NO_EXIST_BOARD);
 
-        Myboard newResult = Myboard.builder()
-                .myboardId(result.getMyboardId())
-                .name(requestBody.getName())
-                .emoji(requestBody.getEmoji())
-                .birth(requestBody.getBirth())
-                .birthStatus(requestBody.getBirthStatus())
-                .mbti(requestBody.getMbti())
-                .myboardComments(requestBody.getMyboardComments())
-                .url1(requestBody.getUrl1())
-                .url2(requestBody.getUrl2())
-                .url3(requestBody.getUrl3())
-                .build();
+        newMyboard.setMyboardId(result.getMyboardId());
+        newMyboard.setKakaoUser(result.getKakaoUser());
+        Myboard changedResult = myboaradRepository.updateMyboard(result, newMyboard);
 
-        return myboardDtoConvert.convert(myboaradRepository.updateMyboard(result, newResult));
+        return myboardDtoConvert.convert(changedResult);
     }
 }

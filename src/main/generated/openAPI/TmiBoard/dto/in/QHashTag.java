@@ -24,9 +24,11 @@ public class QHashTag extends EntityPathBase<HashTag> {
 
     public final StringPath hashTagData = createString("hashTagData");
 
-    public final QKakaoUser kakaoUser;
-
     public final NumberPath<Long> tagId = createNumber("tagId", Long.class);
+
+    public final QTmiCard tmiCard;
+
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QHashTag(String variable) {
         this(HashTag.class, forVariable(variable), INITS);
@@ -46,7 +48,7 @@ public class QHashTag extends EntityPathBase<HashTag> {
 
     public QHashTag(Class<? extends HashTag> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.kakaoUser = inits.isInitialized("kakaoUser") ? new QKakaoUser(forProperty("kakaoUser"), inits.get("kakaoUser")) : null;
+        this.tmiCard = inits.isInitialized("tmiCard") ? new QTmiCard(forProperty("tmiCard"), inits.get("tmiCard")) : null;
     }
 
 }

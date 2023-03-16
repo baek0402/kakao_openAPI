@@ -1,6 +1,7 @@
 package openAPI.TmiBoard.controller.tmiCard;
 
 import lombok.RequiredArgsConstructor;
+import openAPI.TmiBoard.dto.in.HashTag;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.TmiCard;
 import openAPI.TmiBoard.dto.out.ResponseDto;
@@ -9,6 +10,7 @@ import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
 import openAPI.TmiBoard.exception.BaseException;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepository;
+import openAPI.TmiBoard.service.main.HashTagService;
 import openAPI.TmiBoard.service.main.TmiCardService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static openAPI.TmiBoard.exception.BaseResponseStatus.NO_EXIST_TMICARD;
+import static openAPI.TmiBoard.exception.BaseResponseStatus.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import static openAPI.TmiBoard.exception.BaseResponseStatus.NO_EXIST_TMICARD;
 public class TmiCardController {
 
     private final TmiCardService tmicardService;
+    private final HashTagService hashTagService;
     private final KakaoUserRepository kakaoUserRepository;
     private final TmiCardRepository tmiCardRepository;
 
@@ -33,7 +37,15 @@ public class TmiCardController {
         //jwt랑 같이 넘겨..
         //try {
             KakaoUser user = kakaoUserRepository.findById(requestBody.getUserId());
+
+            //1. tmi카드 저장
             TmiCardDto card = tmicardService.createTmicard(requestBody, user);
+
+            //2. 해쉬태그 리스트 저장
+            List<String> hashTagList = requestBody.getHashTagList();
+            Long cardId = card.getCardId();
+
+            String message = hashTagService.saveList(cardId, hashTagList, requestBody.getUserId());
 
             return new ResponseDto<>(card);
         //} catch (BaseException e) {
@@ -74,21 +86,32 @@ public class TmiCardController {
     public TmiCardDto cardUpdate(@PathVariable Long cardId,
                                 @RequestBody TmiCardRequestBody requestBody) {
 
-        //해당 user의 해당 card id에 대한것을 변경해야지..
-        TmiCard card = tmiCardRepository.findCardByKakaoId(requestBody.getUserId(), cardId);
+        //1. 해시태그 수정 (해당 카드에 대한 해시태그 전체 삭제 후 다시 전체 넣기)
+        hashTagService.hashTagDelete(cardId, requestBody.getUserId());
+        //생성
+        List<String> hashTagList = requestBody.getHashTagList();
+        String message = hashTagService.saveList(cardId, hashTagList, requestBody.getUserId());
 
-        TmiCardDto changed = tmicardService.cardUpdate(card, requestBody);
+        //2. 트미카드 수정
+        TmiCard originCard = tmiCardRepository.findCardByKakaoId(requestBody.getUserId(), cardId);
 
-        return changed;
+        TmiCardDto changed = tmicardService.cardUpdate(originCard, requestBody);
+
+        return changed ;
     }
 
     @DeleteMapping("/delete/{cardId}")
-    public ResponseDto<TmiCardDto> cardDelete(@PathVariable Long cardId) {
+    public ResponseDto<TmiCardDto> cardDelete(@PathVariable Long cardId,
+                                              @RequestParam Long userId) {
         try {
-            Long userId = 1L;//
-            TmiCardDto result = tmicardService.cardDelete(cardId, userId);
+            // 1. 해시태그 삭제
+            hashTagService.hashTagDelete(cardId, userId);
 
-            return new ResponseDto<>(result);
+            // 2. 카드 삭제
+            tmicardService.cardDelete(cardId, userId);
+
+            return new ResponseDto<>(SUCCESS);
+
         } catch (BaseException e) {
 
             return new ResponseDto<>(NO_EXIST_TMICARD);

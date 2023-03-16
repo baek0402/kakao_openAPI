@@ -9,13 +9,13 @@ import java.util.List;
 
 @Service
 public class TmiCardConvert {
+
     public TmiCardDto convert(TmiCard source) {
         return TmiCardDto.builder()
                 .cardId(source.getCardId())
                 .cardEmoji(source.getCardEmoji())
                 .cardColor(source.getCardColor())
                 .title(source.getTitle())
-                .hashTag(source.getHashTag())
                 .comments(source.getComments())
                 .build();
     }

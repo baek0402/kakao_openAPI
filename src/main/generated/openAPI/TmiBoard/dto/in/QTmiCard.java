@@ -30,8 +30,6 @@ public class QTmiCard extends EntityPathBase<TmiCard> {
 
     public final StringPath comments = createString("comments");
 
-    public final StringPath hashTag = createString("hashTag");
-
     public final QKakaoUser kakaoUser;
 
     public final StringPath title = createString("title");

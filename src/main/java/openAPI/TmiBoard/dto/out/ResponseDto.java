@@ -25,5 +25,10 @@ public class ResponseDto<T> {
         this.message = status.getMessage();
     }
 
+    public ResponseDto(String message) {
+        this.isSuccess = false;
+        this.message = message;
+    }
+
 
 }

@@ -1,15 +1,14 @@
 package openAPI.TmiBoard.controller.tmiCard;
 
 import lombok.RequiredArgsConstructor;
+import openAPI.TmiBoard.dto.in.HashTag;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.out.HashTagListBody;
+import openAPI.TmiBoard.dto.out.ResponseDto;
 import openAPI.TmiBoard.repository.kakao.KakaoUserRepository;
 import openAPI.TmiBoard.service.main.HashTagService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,14 +24,10 @@ public class HashTagController {
 
     private final HashTagService hashTagService;
 
-    //1. 리스트 형태로 날아온 데이터를 저장하기
-    @GetMapping//("/list")
-    public ResponseEntity SaveHashTag(@RequestBody HashTagListBody requestBody) {
-        Long userId = 2653788098L; //jwt
-        List<String> hashTagList = requestBody.getHashTagList();
+    @PostMapping//random 5 hash tag
+    public ResponseDto<List<String>> randomHashTag(@RequestParam Long userId) {
+        List<String> randomHashList = hashTagService.getRandomList(userId);
 
-        String message = hashTagService.saveList(hashTagList, userId);
-
-        return ResponseEntity.ok("");
+        return new ResponseDto<>(randomHashList);
     }
 }

@@ -37,7 +37,6 @@ public class TmiCardService {
                 .cardEmoji(requestBody.getCardEmoji())
                 .cardColor(requestBody.getCardColor())
                 .title(requestBody.getTitle())
-                .hashTag(requestBody.getHashTag())
                 .comments(requestBody.getComments())
                 .build();
         tmicard.tmiCardSetUser(user);
@@ -69,29 +68,30 @@ public class TmiCardService {
         return tmiCardDtoConvert.convert(tmicard);
     }
 
-    public TmiCardDto cardUpdate(TmiCard card, TmiCardRequestBody requestBody) {
-        Long cardId = card.getCardId();
-        KakaoUser user = card.getKakaoUser();
-        card = TmiCard.builder()
+    public TmiCardDto cardUpdate(TmiCard originCard, TmiCardRequestBody requestBody) {
+        Long cardId = originCard.getCardId();
+        KakaoUser user = originCard.getKakaoUser();
+
+        originCard = TmiCard.builder()
                 .cardId(cardId)
                 .title(requestBody.getTitle())
                 .cardEmoji(requestBody.getCardEmoji())
                 .cardColor(requestBody.getCardColor())
-                .hashTag(requestBody.getHashTag())
                 .comments(requestBody.getComments())
                 .build();
-        card.tmiCardSetUser(user);
+        originCard.tmiCardSetUser(user);
 
-        TmiCard result = tmiCardRepository.save(card);
+        TmiCard result = tmiCardRepository.save(originCard);
         return tmiCardDtoConvert.convert(result);
 
     }
 
     @Transactional
-    public TmiCardDto cardDelete(Long cardId, Long userId) throws BaseException{
+    public TmiCardDto cardDelete(Long cardId, Long userId) throws BaseException {
         TmiCard result = tmiCardRepository.findCardByKakaoId(userId, cardId);
 
-        if(result == null) throw new BaseException(NO_EXIST_TMICARD);
+        if (result == null) throw new BaseException(NO_EXIST_TMICARD);
+
         tmiCardRepository.delete(result);
 
         return tmiCardDtoConvert.convert(result);
