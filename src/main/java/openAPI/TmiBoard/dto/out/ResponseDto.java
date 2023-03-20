@@ -20,6 +20,11 @@ public class ResponseDto<T> {
         this.result = result;
     }
 
+    public ResponseDto(BaseResponseStatus status, String msg) {
+        this.isSuccess = status.isSuccess();
+        this.message = msg;
+    }
+
     public ResponseDto(BaseResponseStatus status) {
         this.isSuccess = status.isSuccess();
         this.message = status.getMessage();

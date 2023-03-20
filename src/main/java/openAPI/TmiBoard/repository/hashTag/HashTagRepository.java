@@ -12,7 +12,7 @@ public interface HashTagRepository {
     HashTag findByKakaoId(Long userId);
     List<String> getRandomList(Long userId);
 
-    List<HashTag> findList(Long cardId);
+    List<HashTag> findList(Long cardId, Long userId);
 
     void deleteList(List<HashTag> hashTagList);
 }

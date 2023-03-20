@@ -4,6 +4,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import openAPI.TmiBoard.dto.in.QTmiCard;
+import openAPI.TmiBoard.dto.in.QTmiCardLike;
 import openAPI.TmiBoard.dto.in.TmiCard;
 import org.springframework.stereotype.Repository;
 
@@ -18,10 +19,16 @@ public class TmiCardRepositoryImpl implements TmiCardCustomRepository {
     @Override
     public List<TmiCard> findByUserId(Long userId) {
         QTmiCard qTmiCard = QTmiCard.tmiCard;
+        QTmiCardLike qTmiCardLike = QTmiCardLike.tmiCardLike;
+
         BooleanBuilder condition = new BooleanBuilder();
         condition.and(qTmiCard.kakaoUser.userId.eq(userId));
 
-        return jpaQueryFactory.selectFrom(qTmiCard).where(condition).fetch();
+        return jpaQueryFactory
+                .selectFrom(qTmiCard)
+                .leftJoin(qTmiCardLike).on(qTmiCardLike.cardId.eq(qTmiCard.cardId))
+                .where(qTmiCard.kakaoUser.userId.eq(userId))
+                .fetch();
     }
 
     @Override

@@ -36,15 +36,15 @@ public class HashTagService {
         return resultList;
     }
 
-    public List<HashTag> getHashTagList(Long cardId) {
-        List<HashTag> resultList = hashTagRespository.findList(cardId);
+    public List<HashTag> getHashTagList(Long cardId, Long userId) {
+        List<HashTag> resultList = hashTagRespository.findList(cardId, userId);
 
         return resultList;
     }
 
     public void hashTagDelete(Long cardId, Long userId) {
         //1. 해당 유저의 카드 아이디 찾기 (?)
-        List<HashTag> result = hashTagRespository.findList(cardId);
+        List<HashTag> result = hashTagRespository.findList(cardId, userId);
 
         hashTagRespository.deleteList(result);
     }

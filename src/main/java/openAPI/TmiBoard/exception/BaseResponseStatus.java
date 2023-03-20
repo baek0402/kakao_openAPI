@@ -8,6 +8,7 @@ public enum BaseResponseStatus {
      * 1000 : 요청 성공
      */
     SUCCESS(true,"요청에 성공하였습니다."),
+    SUCCESS_BUT_EMPTY(true, "자신의 게시글에 상호작용이 안됩니다."),
 
     EMPTY_USER(false, "유저 정보를 찾을 수 없습니다.(DB)"),
 

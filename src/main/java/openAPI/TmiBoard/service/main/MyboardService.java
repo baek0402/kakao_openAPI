@@ -64,6 +64,7 @@ public class MyboardService{
 
     public MyboardDto getMyboard(Long userId) throws BaseException {
         Myboard result = myboaradRepository.findByKakaoId(userId);
+        //result.setMyboardId(result.getMyboardId());
 
         if(result == null)
             throw new BaseException(NO_EXIST_BOARD);

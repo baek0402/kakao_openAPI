@@ -24,7 +24,7 @@ public class HashTagController {
 
     private final HashTagService hashTagService;
 
-    @PostMapping//random 5 hash tag
+    @GetMapping//random 5 hash tag
     public ResponseDto<List<String>> randomHashTag(@RequestParam Long userId) {
         List<String> randomHashList = hashTagService.getRandomList(userId);
 

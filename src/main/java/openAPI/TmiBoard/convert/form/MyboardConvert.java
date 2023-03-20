@@ -10,6 +10,7 @@ public class MyboardConvert {
 
     public MyboardDto convert(Myboard source) {
         return MyboardDto.builder()
+                .boardId(source.getMyboardId())
                 .name(source.getName())
                 .emoji(source.getEmoji())
                 .birth(source.getBirth())

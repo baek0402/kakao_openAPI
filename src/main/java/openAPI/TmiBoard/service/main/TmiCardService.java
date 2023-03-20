@@ -7,10 +7,12 @@ import openAPI.TmiBoard.convert.form.TmiCardDtoConvert;
 import openAPI.TmiBoard.dto.in.KakaoUser;
 import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.in.TmiCard;
+import openAPI.TmiBoard.dto.in.TmiCardInteract;
 import openAPI.TmiBoard.dto.out.TmiCardDto;
 import openAPI.TmiBoard.dto.out.TmiCardRequestBody;
 import openAPI.TmiBoard.exception.BaseException;
 import openAPI.TmiBoard.exception.BaseResponseStatus;
+import openAPI.TmiBoard.repository.tmiCard.TmiCardLikeRepository;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepository;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardRepositoryImpl;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import static openAPI.TmiBoard.exception.BaseResponseStatus.*;
 public class TmiCardService {
 
     private final TmiCardRepository tmiCardRepository;
+    private final TmiCardLikeRepository tmiCardLikeRepository;
     private final TmiCardConvert tmiCardDtoConvert;
 
     @Transactional
@@ -49,6 +52,7 @@ public class TmiCardService {
 
     public List<TmiCardDto> getCardList(Long userId) throws BaseException{
         List<TmiCard> search = tmiCardRepository.findByUserId(userId);
+
         if(search.size() == 0)
             throw new BaseException(NO_EXIST_TMICARD);
 
@@ -56,7 +60,9 @@ public class TmiCardService {
                 .map(TmiCard::getMainData)
                 .collect(Collectors.toList());
 
-        return tmiCardDtoConvert.convertList(result);
+
+        List<TmiCardDto> searchAll = tmiCardDtoConvert.convertList(result);
+        return searchAll;
     }
 
     public TmiCardDto getCardDetail(Long cardId) throws BaseException{

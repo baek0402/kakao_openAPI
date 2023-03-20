@@ -1,6 +1,7 @@
 package openAPI.TmiBoard.controller.myBoard;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import openAPI.TmiBoard.contract.MyboardStatus;
 import openAPI.TmiBoard.dto.in.Myboard;
 import openAPI.TmiBoard.dto.out.MyboardDto;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import static openAPI.TmiBoard.contract.MyboardStatus.*;
 import static openAPI.TmiBoard.exception.BaseResponseStatus.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class MyboardController {
@@ -35,29 +37,19 @@ public class MyboardController {
     public ResponseDto<MyboardDto> creaetMyboard(
             @RequestBody @Valid MyboardRequestBody myboardRequestBody) {//jwt 유효성 검증을하고
         try {
-            // 로그인 유저의 접근인지 확인
-            /*Long userIdxByJwt = jwtService.getUserIdx();
-            if (myboardRequestBody.getUserId() != userIdxByJwt) {
-                return ResponseEntity.ok("not invalid user");
-            }
 
-            //궁금점 : 여기서의 userIdxByJwt는 jwt내에서 생성된 userId인가효..? encoding을 통해 찾아낸 kakao user Id 인가요..?
-            Optional<KakaoUser> user = repository.findById(myboardRequestBody.getUserId());
-            MyboardDto resultDto = myboardService.createMyboard(myboardRequestBody, user.get());
-
-            return ResponseEntity.ok(resultDto);
-        } catch (BaseException exception) {
-            logger.warn("#37. " + exception.getStatus().getMessage());
-
-            return ResponseEntity.ok(exception.getStatus());
-        }
-       */
-
+            /* 로그인 유저의 접근인지 확인 */
             //1. 프론트에서 던져준 json data 안에 있는 userId와 jwt로 받아온 userId를 비교하기
+            /*Long userIdxByJwt = jwtService.getUserIdx();
+            if(!userIdxByJwt.equals(myboardRequestBody.getUserId())) {
+                log.error(userIdxByJwt + " , " + myboardRequestBody.getUserId());
+                return new ResponseDto<>(INVALID_JWT);
+            }*/
+
             //2. 로그인 유저의 접근이 확인이 되면, 해당 카카오 유저 정보를 db에서 가져오기
             Long userId = myboardRequestBody.getUserId();
-            if(userId == null)
-                return new ResponseDto<>(EMPTY_USER);
+//            if(userId == null)
+//                return new ResponseDto<>(EMPTY_USER);
 
             MyboardDto resultDto = myboardService.createMyboard(myboardRequestBody, userId);
             resultDto.setBirthRule(resultDto.getBirth());
@@ -66,9 +58,9 @@ public class MyboardController {
             //여기서 이제 위에 찾은 kakaoUser(user.get()) 을 같이 던져주면 됩니다 ~!
 
         } catch (BaseException e) {
-            return new ResponseDto<>(ALREADY_EXIST_BOARD);
+
+            return new ResponseDto<>(e.getMessage());
         }
-        //return ResponseEntity.ok(resultDto);
     }
 
     @GetMapping("/myboard")

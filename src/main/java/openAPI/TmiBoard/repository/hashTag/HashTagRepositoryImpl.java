@@ -58,12 +58,12 @@ public class HashTagRepositoryImpl implements HashTagRepository{
                 .fetch();
     }
 
-    public List<HashTag> findList(Long cardId) {
+    public List<HashTag> findList(Long cardId, Long userId) {
         QHashTag qHashTag = QHashTag.hashTag;
 
         return queryFactory.select(qHashTag)
                 .from(qHashTag)
-                .where(qHashTag.tmiCard.cardId.eq(cardId))
+                .where(qHashTag.tmiCard.cardId.eq(cardId).and(qHashTag.userId.eq(userId)))
                 .fetch();
     }
 
