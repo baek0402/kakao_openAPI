@@ -12,6 +12,7 @@ import openAPI.TmiBoard.repository.tmiCard.TmiCardCustomRepository;
 import openAPI.TmiBoard.repository.tmiCard.TmiCardLikeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,6 +47,12 @@ public class InteractService {
 
         tmiCardLikeRepository.delete(result.get());
         return "상호작용 취소했습니다";
+    }
+
+    public String deleteAllLike(Long cardId) {
+        tmiCardLikeRepository.deleteAll(tmiCardLikeRepository.findLikeList(cardId));
+
+        return "상호작용 전부 삭제";
     }
 
     public TmiCardInteractDto getCount(Long cardId) {

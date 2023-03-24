@@ -9,6 +9,7 @@ import openAPI.TmiBoard.contract.MyboardStatus;
 public class MyboardDto {
 
     private Long boardId;
+    private Long userId;
     //1
     private String name;
     private String mbti;
@@ -36,8 +37,9 @@ public class MyboardDto {
     }
 
     @Builder
-    public MyboardDto(Long boardId, String name, String mbti, String birth, String myboardComments, String emoji, BirthStatus birthStatus, String url1, String url1Type, String url2, String url2Type, String url3, String url3Type, MyboardStatus myboardStatus) {
+    public MyboardDto(Long boardId, Long userId, String name, String mbti, String birth, String myboardComments, String emoji, BirthStatus birthStatus, String url1, String url1Type, String url2, String url2Type, String url3, String url3Type, MyboardStatus myboardStatus) {
         this.boardId = boardId;
+        this.userId = userId;
         this.name = name;
         this.mbti = mbti;
         this.birth = birth;

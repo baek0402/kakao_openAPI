@@ -26,7 +26,7 @@ public class TmiCardRepositoryImpl implements TmiCardCustomRepository {
 
         return jpaQueryFactory
                 .selectFrom(qTmiCard)
-                .leftJoin(qTmiCardLike).on(qTmiCardLike.cardId.eq(qTmiCard.cardId))
+                //.leftJoin(qTmiCardLike).on(qTmiCardLike.cardId.eq(qTmiCard.cardId))
                 .where(qTmiCard.kakaoUser.userId.eq(userId))
                 .fetch();
     }

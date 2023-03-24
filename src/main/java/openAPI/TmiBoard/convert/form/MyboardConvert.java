@@ -11,6 +11,7 @@ public class MyboardConvert {
     public MyboardDto convert(Myboard source) {
         return MyboardDto.builder()
                 .boardId(source.getMyboardId())
+                .userId(source.getKakaoUser().getUserId())
                 .name(source.getName())
                 .emoji(source.getEmoji())
                 .birth(source.getBirth())

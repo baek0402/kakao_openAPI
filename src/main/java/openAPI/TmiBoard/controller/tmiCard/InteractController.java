@@ -57,10 +57,10 @@ public class InteractController {
        return new ResponseDto<>(SUCCESS, msg);
     }
 
-//    @DeleteMapping
-//    public ResponseEntity delete(@RequestParam Long userId,
-//                                 @RequestParam Long cardId) {
-//        TmiCardLikeDto result = interactService.delete(userId, cardId);
-//        return ResponseEntity.ok(result);
-//    }
+    @DeleteMapping
+    public ResponseDto<Void> delete(@RequestParam Long userId,
+                                 @RequestParam Long cardId) {
+        String result = interactService.delete(userId, cardId);
+        return new ResponseDto<>(SUCCESS, result);
+    }
 }

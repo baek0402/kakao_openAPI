@@ -20,7 +20,7 @@ public class KakaoCreateService {
     private final KakaoUserRepository kakaoUserRepository;
 
     public KakaoUser createKakaoUser(KakaoUser userInfo) {
-        KakaoUser user = kakaoUserRepository.findByEmail(userInfo.getUserEmail());
+        KakaoUser user = kakaoUserRepository.findById(userInfo.getUserId());
         userInfo.updateStatus(UserStatus.JOIN);
 
         if(user == null) {

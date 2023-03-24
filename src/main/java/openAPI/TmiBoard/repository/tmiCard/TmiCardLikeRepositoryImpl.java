@@ -9,14 +9,16 @@ import openAPI.TmiBoard.dto.in.TmiCardInteract;
 import openAPI.TmiBoard.dto.in.TmiCardLike;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class TmiCardLikeRepositoryImpl implements TmiCardLikeCustomRepository{
+public class TmiCardLikeRepositoryImpl implements TmiCardLikeRepository{
 
     private Interact interact;
     private final JPAQueryFactory jpaQueryFactory;
+    private final TmiCardLikeCustomRepository tmiCardLikeRepository;
 
     public Optional<TmiCardLike> findByUserAndCard(Long userId, Long cardId) {
         QTmiCardLike qTmiCardLike = QTmiCardLike.tmiCardLike;
@@ -24,6 +26,16 @@ public class TmiCardLikeRepositoryImpl implements TmiCardLikeCustomRepository{
         return Optional.ofNullable(jpaQueryFactory.selectFrom(qTmiCardLike)
                 .where(qTmiCardLike.userId.eq(userId).and(qTmiCardLike.cardId.eq(cardId)))
                 .fetchOne());
+    }
+
+    @Override
+    public void save(TmiCardLike tmiCardLike) {
+        tmiCardLikeRepository.save(tmiCardLike);
+    }
+
+    @Override
+    public void delete(TmiCardLike tmiCardLike) {
+        tmiCardLikeRepository.delete(tmiCardLike);
     }
 
     public TmiCardInteract countInteract(Long cardId) {
@@ -52,6 +64,17 @@ public class TmiCardLikeRepositoryImpl implements TmiCardLikeCustomRepository{
         );
 
         return result;
+    }
 
+    public List<TmiCardLike> findLikeList(Long cardId) {
+        QTmiCardLike qTmiCardLike = QTmiCardLike.tmiCardLike;
+
+        return jpaQueryFactory.selectFrom(qTmiCardLike)
+                .where(qTmiCardLike.cardId.eq(cardId))
+                .fetch();
+    }
+
+    public void deleteAll(List<TmiCardLike> resultList) {
+        tmiCardLikeRepository.deleteAll(resultList);
     }
 }

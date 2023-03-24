@@ -30,7 +30,7 @@ public class KakaoOauthService implements OauthService {
 //        params.add("redirect_uri", "http://localhost:3000/users/login/kakao");
         params.add("redirect_uri", "https://tmiboard.swygbro.com/users/login/kakao");
         params.add("code", code);
-        params.add("scope", "account_email");
+//        params.add("scope", "account_email");
 
         // HttpHeader와 HttpBody를 하나의 오브젝트에 담기
         RestTemplate rt = new RestTemplate();
@@ -81,9 +81,10 @@ public class KakaoOauthService implements OauthService {
 
         KakaoUser userInfo = KakaoUser.builder()
                 .userId(body.getLong("id"))
-                .userEmail(body.getJSONObject("kakao_account").getString("email"))
-                .userName(body.getJSONObject("properties").getString("nickname"))
+                .userName("")
+                .userEmail("")
                 .build();
+//.userName(body.getJSONObject("properties").getString("nickname"))
 //
 //        if(userInfo.getMyboardStatus());
 

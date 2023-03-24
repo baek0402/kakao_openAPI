@@ -81,6 +81,11 @@ public class MyboardController {
     {
         try {
 
+            Long userIdxByJwt = jwtService.getUserIdx();
+            if(!userIdxByJwt.equals(myboardRequestBody.getUserId())) {
+                log.error(userIdxByJwt + " , " + myboardRequestBody.getUserId());
+                return new ResponseDto<>(INVALID_JWT);
+
             //수정하려는 kakaoUser의 myboard를 가져와서 해당 내용을 새로운 정보로 바꾸기
             Long userId = requestBody.getUserId();
             if(userId == null)

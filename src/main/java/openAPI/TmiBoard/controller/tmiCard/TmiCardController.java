@@ -32,10 +32,10 @@ public class TmiCardController {
     private final JwtService jwtService;
     private final TmiCardService tmicardService;
     private final HashTagService hashTagService;
-    private final InteractService interactService;
     private final KakaoUserRepository kakaoUserRepository;
     private final TmiCardRepository tmiCardRepository;
     private final TmiCardLikeRepository tmiCardLikeRepository;
+    private final InteractService interactService;
 
     //create
     @PostMapping("/create")
@@ -88,9 +88,10 @@ public class TmiCardController {
             //해당되는 트미보드 별로 상호작용 수 불러오기
             searchAll = searchAll.stream()
                     .map(card -> {
-                        card.setGreatCount(tmiCardLikeRepository.countInteract(card.getCardId()).getCount_great());
-                        card.setHeartCount(tmiCardLikeRepository.countInteract(card.getCardId()).getCount_heart());
-                        card.setClapCount(tmiCardLikeRepository.countInteract(card.getCardId()).getCount_clap());
+                        TmiCardInteract interact = tmiCardLikeRepository.countInteract(card.getCardId());
+                        card.setGreatCount(interact.getCount_great());
+                        card.setHeartCount(interact.getCount_heart());
+                        card.setClapCount(interact.getCount_clap());
                     return card; })
                     .collect(Collectors.toList());
 
@@ -118,7 +119,7 @@ public class TmiCardController {
 
                 return new ResponseDto<>(searchAll);
         } catch (BaseException e) {
-            return new ResponseDto<>(NO_EXIST_TMICARD);
+            return new ResponseDto<>(e.getStatus());
         }
     }
 
@@ -140,6 +141,9 @@ public class TmiCardController {
     public TmiCardDto cardUpdate(@PathVariable Long cardId,
                                 @RequestBody TmiCardRequestBody requestBody) {
 
+        //기존에 유지되어야 할 상호작용 수
+        TmiCardInteract interact = tmiCardLikeRepository.countInteract(cardId);
+
         //1. 해시태그 수정 (해당 카드에 대한 해시태그 전체 삭제 후 다시 전체 넣기)
         hashTagService.hashTagDelete(cardId, requestBody.getUserId());
         //생성
@@ -150,6 +154,10 @@ public class TmiCardController {
         TmiCard originCard = tmiCardRepository.findCardByKakaoId(requestBody.getUserId(), cardId);
 
         TmiCardDto changed = tmicardService.cardUpdate(originCard, requestBody);
+        changed.setHeartCount(interact.getCount_heart());
+        changed.setClapCount(interact.getCount_clap());
+        changed.setGreatCount(interact.getCount_great());
+        changed.setHashTagList(hashTagList);
 
         return changed ;
     }
@@ -158,6 +166,9 @@ public class TmiCardController {
     public ResponseDto<TmiCardDto> cardDelete(@PathVariable Long cardId,
                                               @RequestParam Long userId) {
         try {
+            //0. 상호작용이 있으면 그거부터 삭제
+            interactService.deleteAllLike(cardId);
+
             // 1. 해시태그 삭제
             hashTagService.hashTagDelete(cardId, userId);
 
