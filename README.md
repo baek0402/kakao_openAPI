@@ -1,10 +1,8 @@
-# 🍕 카카오 로그인 OpenAPI
+# 트미(TMI)보드 : Not Too much, Please More! 🙋
 
-### 💕 구현 진행상황 ( 23. 3. 13)
-1. OAuth를 이용한 Token 얻기
-2. Token을 통해 사용자 정보 얻기
-3. 사용자 정보의 유/무에 따른 회원가입 (DB저장)
-4. JWT를 통한 사용자 인가
-5. 마이보드, 트미카드 생성/수정/삭제
-6. AWS(EC2, RDS) 백엔드 서버 배포
+### 서비스 소개
+![image](https://user-images.githubusercontent.com/84756243/228445984-48289a9d-b181-43e0-8093-cf12ce42a7f3.png)
+
+
+
 
