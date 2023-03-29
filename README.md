@@ -1,7 +1,7 @@
-# [SWYG 5기 프로젝트] 
-트미(TMI)보드 : Not Too much, Please More! 🙋 
+# 트미(TMI)보드 : Not Too much, Please More! 🙋 
 
-나의 TMI 적으러 가기 
+### SWYG 5기 프로젝트
+### 나의 TMI 적으러 가기 
 [tmiboard.swygbro.com](https://tmiboard.swygbro.com/)
 
 ### 서비스 소개
