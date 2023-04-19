@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-03-20T15:50:58+0900",
+    date = "2023-04-19T17:10:59+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 17 (Oracle Corporation)"
 )
 @Component
@@ -27,13 +27,6 @@ public class TmiCardDtoConvertImpl implements TmiCardDtoConvert {
         String cardColor = null;
         String title = null;
         String comments = null;
-
-        cardId = source.getCardId();
-        cardEmoji = source.getCardEmoji();
-        cardColor = source.getCardColor();
-        title = source.getTitle();
-        comments = source.getComments();
-
         String selectedInteract = null;
 
         TmiCardDto tmiCardDto = new TmiCardDto( cardId, cardEmoji, cardColor, title, comments, selectedInteract );

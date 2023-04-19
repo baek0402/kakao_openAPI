@@ -77,44 +77,43 @@ public class MyboardController {
 
     @PutMapping("/myboard")
     public ResponseDto<MyboardDto> myboardUpdate(
-            @RequestBody @Valid MyboardRequestBody requestBody)
-    {
+            @RequestBody @Valid MyboardRequestBody requestBody) {
         try {
 
             Long userIdxByJwt = jwtService.getUserIdx();
-            if(!userIdxByJwt.equals(myboardRequestBody.getUserId())) {
-                log.error(userIdxByJwt + " , " + myboardRequestBody.getUserId());
+            if (!userIdxByJwt.equals(requestBody.getUserId())) {
+                log.error(userIdxByJwt + " , " + requestBody.getUserId());
                 return new ResponseDto<>(INVALID_JWT);
-
-            //수정하려는 kakaoUser의 myboard를 가져와서 해당 내용을 새로운 정보로 바꾸기
+            }
+                //수정하려는 kakaoUser의 myboard를 가져와서 해당 내용을 새로운 정보로 바꾸기
             Long userId = requestBody.getUserId();
-            if(userId == null)
+            if (userId == null)
                 return new ResponseDto<>(EMPTY_USER);
 
             Myboard newMyboard = Myboard.builder()
-                    .name(requestBody.getName())
-                    .emoji(requestBody.getEmoji())
-                    .birth(requestBody.getBirth())
-                    .birthStatus(requestBody.getBirthStatus())
-                    .mbti(requestBody.getMbti())
-                    .myboardComments(requestBody.getMyboardComments())
-                    .url1(requestBody.getUrl1())
-                    .url1Type(requestBody.getUrl1Type())
-                    .url2(requestBody.getUrl2())
-                    .url2Type(requestBody.getUrl2Type())
-                    .url3(requestBody.getUrl3())
-                    .url3Type(requestBody.getUrl3Type())
-                    .myboardStatus(Y)
-                    .build();
+                        .name(requestBody.getName())
+                        .emoji(requestBody.getEmoji())
+                        .birth(requestBody.getBirth())
+                        .birthStatus(requestBody.getBirthStatus())
+                        .mbti(requestBody.getMbti())
+                        .myboardComments(requestBody.getMyboardComments())
+                        .url1(requestBody.getUrl1())
+                        .url1Type(requestBody.getUrl1Type())
+                        .url2(requestBody.getUrl2())
+                        .url2Type(requestBody.getUrl2Type())
+                        .url3(requestBody.getUrl3())
+                        .url3Type(requestBody.getUrl3Type())
+                        .myboardStatus(Y)
+                        .build();
 
             MyboardDto resultDto = myboardService.updateMyboard(newMyboard, userId);
             resultDto.setBirthRule(resultDto.getBirth());
 
             return new ResponseDto<>(resultDto);
+
         } catch (BaseException e) {
 
             return new ResponseDto<>(NO_EXIST_BOARD);
         }
     }
-
 }
